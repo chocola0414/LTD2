@@ -102,6 +102,26 @@ input[type="number"]{width:110px;font-family:var(--f-mono)}
 .combo .tot{border-top:1px solid var(--line);padding-top:6px;font-family:var(--f-mono);font-size:.85rem;display:flex;justify-content:space-between}
 .sources a,td a{color:var(--accent)}
 section[hidden]{display:none!important}
+.kings{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 14px}
+.kbar{height:12px;border-radius:4px;background:var(--bad-soft);overflow:hidden;border:1px solid var(--line)}
+.kbar span{display:block;height:100%;background:var(--good)}
+.lanes{display:grid;grid-template-columns:repeat(4,minmax(250px,1fr));gap:12px}
+.lanehead{display:flex;align-items:center;gap:8px;min-width:0}
+.lanehead b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ico{width:28px;height:28px;border-radius:4px;flex:none;background:var(--bg)}
+.ico.s{width:24px;height:24px}
+.icons{display:flex;flex-wrap:wrap;gap:3px;align-items:center;min-height:24px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center}
+.stats div{background:var(--bg);border-radius:4px;padding:3px 0}
+.stats b{display:block;font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.95rem}
+.stats span{font-size:.72rem;color:var(--muted)}
+.board{position:relative;width:100%;aspect-ratio:9/14;border:1px solid var(--line);border-radius:4px;background-color:var(--bg);
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:calc(100%/9) calc(100%/14)}
+.board img{position:absolute;width:calc(100%/9);height:calc(100%/14);padding:1px;border-radius:3px}
+.lrow{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:26px;font-size:.8rem;color:var(--muted)}
+.lrow .v{font-family:var(--f-mono);color:var(--ink)}
+.leak{font-family:var(--f-mono);font-weight:600;color:var(--bad)}
+.verdict{border:1px dashed var(--line);border-radius:6px;padding:6px 8px;font-size:.8rem;color:var(--muted)}
 @media (max-width:520px){th,td{padding:6px 7px}.brand h1{font-size:1.4rem}}
 </style>
 
@@ -113,6 +133,7 @@ section[hidden]{display:none!important}
     <button role="tab" id="tab-mercs" aria-selected="false" data-tab="mercs">傭兵</button>
     <button role="tab" id="tab-waves" aria-selected="false" data-tab="waves">波次怪物</button>
     <button role="tab" id="tab-matrix" aria-selected="false" data-tab="matrix">屬性相剋</button>
+    <button role="tab" id="tab-replay" aria-selected="false" data-tab="replay">對局復盤</button>
     <button role="tab" id="tab-notes" aria-selected="false" data-tab="notes">版本與來源</button>
   </nav>
 </div></header>
@@ -211,6 +232,18 @@ section[hidden]{display:none!important}
   </div>
 </section>
 
+<section data-sec="replay" hidden style="display:flex;flex-direction:column;gap:16px">
+  <div class="panel">
+    <h2>對局復盤</h2>
+    <div class="controls">
+      <input type="text" id="rid" placeholder="貼上對局 ID，或含 ID 的網址" aria-label="對局 ID">
+      <button class="btn primary" id="rgo" type="button">撈取</button>
+    </div>
+    <p class="small muted" id="rmsg" style="margin:0">目前支援 2v2 排位。官方只保留一年內的對局。</p>
+  </div>
+  <div id="rview" style="display:flex;flex-direction:column;gap:16px"></div>
+</section>
+
 <section data-sec="notes" hidden>
   <div class="panel">
     <h2>版本與資料可信度</h2>
@@ -219,6 +252,7 @@ section[hidden]{display:none!important}
       <li>公告裡的數值改動多是百分比微調，這裡只記會影響判斷的部分：屬性、能力機制、光環數值。</li>
       <li>派兵計算只算屬性相剋，沒有模擬單位能力、站位和血量。像 Fire Lord 的護盾、Head Chef 的吸血、範圍傷害單位，仍要搭配傭兵能力一起判斷。</li>
       <li>傭兵和怪物的平衡改動頻繁，精確數值以遊戲內 <code>-info</code> 為準。</li>
+      <li>對局復盤的資料即時取自官方 API（經 Cloudflare Worker 轉送，API key 不放在頁面裡）；單位與波次賞金取自官方 API 的單位清單，改版後要重抓。</li>
       <li>共用陣容和派兵紀錄存在這個頁面的共用資料裡：有「參與者」以上權限的人可以新增和修改，「檢視者」只能看。分頁、本機草稿只存在你自己的瀏覽器。</li>
     </ul>
     <div class="sources small">
@@ -229,6 +263,7 @@ section[hidden]{display:none!important}
         <li><a href="https://legiontd2.wiki.gg/wiki/Mercenary" target="_blank" rel="noopener">Mercenary – Legion TD 2 Wiki</a></li>
         <li><a href="https://legiontd2.wiki.gg/wiki/Wave" target="_blank" rel="noopener">Wave – Legion TD 2 Wiki</a></li>
         <li><a href="https://store.steampowered.com/news/app/469600" target="_blank" rel="noopener">Legion TD 2 Steam 更新公告（v11.00 – v26.9）</a></li>
+        <li><a href="https://swagger.legiontd2.com/" target="_blank" rel="noopener">Legion TD 2 官方 API</a>（對局、單位、波次）</li>
       </ul>
     </div>
   </div>
@@ -590,6 +625,117 @@ function renderPlan(){
   $("#defcards").innerHTML=`<div class="card"><h3>自己守這波：攻擊類型（打 ${ZH[w.def]}）</h3><ul class="rank">${atkRank.map(([a,v])=>li(a,v)).join("")}</ul></div>
    <div class="card"><h3>自己守這波：護甲類型（扛 ${ZH[w.atk]}）</h3><ul class="rank">${defRank.map(([d,v])=>li(d,v,true)).join("")}</ul></div>`;
 }
+
+/* ---------- match replay ---------- */
+// 官方 API key 不能放前端，經 Cloudflare Worker 代理（repo 的 worker/）
+const REPLAY_API="https://ltd2-proxy.ltd2tool-zofgk.workers.dev/match/";
+const UNITS={"version":"26.9.hf3","units":{"proton_unit_id":{"n":"Proton","i":"Proton.png","c":"Fighter","v":20,"m":0,"b":0},"atom_unit_id":{"n":"Atom","i":"Atom.png","c":"Fighter","v":90,"m":0,"b":0},"aqua_spirit_unit_id":{"n":"Aqua Spirit","i":"AquaSpirit.png","c":"Fighter","v":50,"m":0,"b":0},"rogue_wave_unit_id":{"n":"Rogue Wave","i":"RogueWave.png","c":"Fighter","v":165,"m":0,"b":0},"windhawk_unit_id":{"n":"Windhawk","i":"Windhawk.png","c":"Fighter","v":85,"m":0,"b":0},"violet_unit_id":{"n":"Violet","i":"Violet.png","c":"Fighter","v":265,"m":0,"b":0},"mudman_unit_id":{"n":"Mudman","i":"Mudman.png","c":"Fighter","v":140,"m":0,"b":0},"golem_unit_id":{"n":"Golem","i":"Golem.png","c":"Fighter","v":405,"m":0,"b":0},"disciple_unit_id":{"n":"Disciple","i":"Disciple.png","c":"Fighter","v":195,"m":0,"b":0},"starcaller_unit_id":{"n":"Starcaller","i":"Starcaller.png","c":"Fighter","v":530,"m":0,"b":0},"fire_elemental_unit_id":{"n":"Fire Elemental","i":"FireElemental.png","c":"Fighter","v":190,"m":0,"b":0},"fenix_unit_id":{"n":"Fenix","i":"Fenix.png","c":"Fighter","v":705,"m":0,"b":0},"peewee_unit_id":{"n":"Peewee","i":"Peewee.png","c":"Fighter","v":25,"m":0,"b":0},"veteran_unit_id":{"n":"Veteran","i":"Veteran.png","c":"Fighter","v":115,"m":0,"b":0},"bazooka_unit_id":{"n":"Bazooka","i":"Bazooka.png","c":"Fighter","v":45,"m":0,"b":0},"pyro_unit_id":{"n":"Pyro","i":"Pyro.png","c":"Fighter","v":220,"m":0,"b":0},"zeus_unit_id":{"n":"Zeus","i":"Zeus.png","c":"Fighter","v":175,"m":0,"b":0},"aps_unit_id":{"n":"APS","i":"APS.png","c":"Fighter","v":150,"m":0,"b":0},"mps_unit_id":{"n":"MPS","i":"MPS.png","c":"Fighter","v":400,"m":0,"b":0},"tempest_unit_id":{"n":"Tempest","i":"Tempest.png","c":"Fighter","v":90,"m":0,"b":0},"leviathan_unit_id":{"n":"Leviathan","i":"Leviathan.png","c":"Fighter","v":280,"m":0,"b":0},"berserker_unit_id":{"n":"Berserker","i":"Berserker.png","c":"Fighter","v":190,"m":0,"b":0},"fatalizer_unit_id":{"n":"Fatalizer","i":"Fatalizer.png","c":"Fighter","v":545,"m":0,"b":0},"millennium_unit_id":{"n":"Millennium","i":"Millennium.png","c":"Fighter","v":290,"m":0,"b":0},"doomsday_machine_unit_id":{"n":"Doomsday Machine","i":"DoomsdayMachine.png","c":"Fighter","v":715,"m":0,"b":0},"reactor_unit_id":{"n":"Reactor","i":"Reactor.png","c":"Fighter","v":50,"m":0,"b":0},"buzz_unit_id":{"n":"Buzz","i":"Buzz.png","c":"Fighter","v":20,"m":0,"b":0},"consort_unit_id":{"n":"Consort","i":"Consort.png","c":"Fighter","v":105,"m":0,"b":0},"ranger_unit_id":{"n":"Ranger","i":"Ranger.png","c":"Fighter","v":55,"m":0,"b":0},"daphne_unit_id":{"n":"Daphne","i":"Daphne.png","c":"Fighter","v":180,"m":0,"b":0},"wileshroom_unit_id":{"n":"Wileshroom","i":"Wileshroom.png","c":"Fighter","v":95,"m":0,"b":0},"canopie_unit_id":{"n":"Canopie","i":"Canopie.png","c":"Fighter","v":275,"m":0,"b":0},"honeyflower_unit_id":{"n":"Honeyflower","i":"Honeyflower.png","c":"Fighter","v":130,"m":0,"b":0},"deathcap_unit_id":{"n":"Deathcap","i":"Deathcap.png","c":"Fighter","v":395,"m":0,"b":0},"antler_unit_id":{"n":"Antler","i":"Antler.png","c":"Fighter","v":200,"m":0,"b":0},"whitemane_unit_id":{"n":"Whitemane","i":"Whitemane.png","c":"Fighter","v":555,"m":0,"b":0},"banana_bunk_unit_id":{"n":"Banana Bunk","i":"BananaBunk.png","c":"Fighter","v":280,"m":0,"b":0},"banana_haven_unit_id":{"n":"Banana Haven","i":"BananaHaven.png","c":"Fighter","v":700,"m":0,"b":0},"bone_warrior_unit_id":{"n":"Bone Warrior","i":"BoneWarrior.png","c":"Fighter","v":15,"m":0,"b":0},"bone_crusher_unit_id":{"n":"Bone Crusher","i":"BoneCrusher.png","c":"Fighter","v":110,"m":0,"b":0},"fire_archer_unit_id":{"n":"Fire Archer","i":"FireArcher.png","c":"Fighter","v":80,"m":0,"b":0},"dark_mage_unit_id":{"n":"Dark Mage","i":"DarkMage.png","c":"Fighter","v":95,"m":0,"b":0},"gargoyle_unit_id":{"n":"Gargoyle","i":"Gargoyle.png","c":"Fighter","v":40,"m":0,"b":0},"green_devil_unit_id":{"n":"Green Devil","i":"GreenDevil.png","c":"Fighter","v":160,"m":0,"b":0},"gateguard_unit_id":{"n":"Gateguard","i":"Gateguard.png","c":"Fighter","v":100,"m":0,"b":0},"harbinger_unit_id":{"n":"Harbinger","i":"Harbinger.png","c":"Fighter","v":290,"m":0,"b":0},"butcher_unit_id":{"n":"Butcher","i":"Butcher.png","c":"Fighter","v":150,"m":0,"b":0},"head_chef_unit_id":{"n":"Head Chef","i":"HeadChef.png","c":"Fighter","v":415,"m":0,"b":0},"nightmare_unit_id":{"n":"Nightmare","i":"Nightmare.png","c":"Fighter","v":185,"m":0,"b":0},"doppelganger_unit_id":{"n":"Doppelganger","i":"Doppelganger.png","c":"Fighter","v":525,"m":0,"b":0},"lord_of_death_unit_id":{"n":"Lord Of Death","i":"LordOfDeath.png","c":"Fighter","v":265,"m":0,"b":0},"hades_unit_id":{"n":"Hades","i":"Hades.png","c":"Fighter","v":675,"m":0,"b":0},"chaos_hound_unit_id":{"n":"Chaos Hound","i":"ChaosHound.png","c":"Fighter","v":0,"m":0,"b":0},"crab_unit_id":{"n":"Crab","i":"Crab.png","c":"Creature","v":0,"m":0,"b":6},"hopper_unit_id":{"n":"Hopper","i":"Hopper.png","c":"Creature","v":0,"m":0,"b":5},"scorpion_unit_id":{"n":"Scorpion","i":"Scorpion.png","c":"Creature","v":0,"m":0,"b":9},"quill_shooter_unit_id":{"n":"Quill Shooter","i":"QuillShooter.png","c":"Creature","v":0,"m":0,"b":13},"flying_chicken_unit_id":{"n":"Flying Chicken","i":"FlyingChicken.png","c":"Creature","v":0,"m":0,"b":8},"rocko_unit_id":{"n":"Rocko","i":"Rocko.png","c":"Creature","v":0,"m":0,"b":19},"mantis_unit_id":{"n":"Mantis","i":"Mantis.png","c":"Creature","v":0,"m":0,"b":14},"dire_toad_unit_id":{"n":"Dire Toad","i":"DireToad.png","c":"Creature","v":0,"m":0,"b":23},"wale_unit_id":{"n":"Wale","i":"Wale.png","c":"Creature","v":0,"m":0,"b":7},"granddaddy_unit_id":{"n":"Granddaddy","i":"Granddaddy.png","c":"Creature","v":0,"m":0,"b":150},"carapace_unit_id":{"n":"Carapace","i":"Carapace.png","c":"Creature","v":0,"m":0,"b":12},"kobra_unit_id":{"n":"Kobra","i":"Kobra.png","c":"Creature","v":0,"m":0,"b":11},"skyfish_unit_id":{"n":"Metal Dragon","i":"MetalDragon.png","c":"Creature","v":0,"m":0,"b":19},"wale_chief_unit_id":{"n":"Wale Chief","i":"WaleChief.png","c":"Creature","v":0,"m":0,"b":42},"killer_slug_unit_id":{"n":"Killer Slug","i":"KillerSlug.png","c":"Creature","v":0,"m":0,"b":16},"octopus_unit_id":{"n":"Quadrapus","i":"Quadrapus.png","c":"Creature","v":0,"m":0,"b":17},"drill_golem_unit_id":{"n":"Drill Golem","i":"DrillGolem.png","c":"Creature","v":0,"m":0,"b":30},"sludge_unit_id":{"n":"Sludge","i":"Sludge.png","c":"Creature","v":0,"m":0,"b":10},"cardinal_unit_id":{"n":"Cardinal","i":"Cardinal.png","c":"Creature","v":0,"m":0,"b":12},"maccabeus_unit_id":{"n":"Maccabeus","i":"Maccabeus.png","c":"Creature","v":0,"m":0,"b":300},"snail_unit_id":{"n":"Snail","i":"Snail.png","c":"Mercenary","v":0,"m":20,"b":2},"lizard_unit_id":{"n":"Lizard","i":"Lizard.png","c":"Mercenary","v":0,"m":40,"b":4},"fiend_unit_id":{"n":"Fiend","i":"Fiend.png","c":"Mercenary","v":0,"m":60,"b":6},"brute_unit_id":{"n":"Brute","i":"Brute.png","c":"Mercenary","v":0,"m":60,"b":9},"dragon_turtle_unit_id":{"n":"Dragon Turtle","i":"DragonTurtle.png","c":"Mercenary","v":0,"m":40,"b":4},"hermit_unit_id":{"n":"Hermit","i":"Hermit.png","c":"Mercenary","v":0,"m":80,"b":12},"dino_unit_id":{"n":"Dino","i":"Dino.png","c":"Mercenary","v":0,"m":80,"b":8},"safety_mole_unit_id":{"n":"Safety Mole","i":"SafetyMole.png","c":"Mercenary","v":0,"m":120,"b":18},"drake_unit_id":{"n":"Drake","i":"Drake.png","c":"Mercenary","v":0,"m":120,"b":12},"mimic_unit_id":{"n":"Mimic","i":"Mimic.png","c":"Mercenary","v":0,"m":160,"b":24},"pack_leader_unit_id":{"n":"Pack Leader","i":"PackLeader.png","c":"Mercenary","v":0,"m":160,"b":24},"centaur_unit_id":{"n":"Centaur","i":"Centaur.png","c":"Mercenary","v":0,"m":280,"b":42},"four_eyes_unit_id":{"n":"Four Eyes","i":"FourEyes.png","c":"Mercenary","v":0,"m":240,"b":36},"shaman_unit_id":{"n":"Shaman","i":"Shaman.png","c":"Mercenary","v":0,"m":320,"b":48},"ghost_knight_unit_id":{"n":"Ghost Knight","i":"GhostKnight.png","c":"Mercenary","v":0,"m":240,"b":36},"kraken_unit_id":{"n":"Kraken","i":"Kraken.png","c":"Mercenary","v":0,"m":400,"b":60},"legion_lord_unit_id":{"n":"Legion Lord","i":"LegionLord.png","c":"Creature","v":0,"m":0,"b":30},"punching_bag_unit_id":{"n":"Punching Bag","i":"PunchingBag.png","c":"Creature","v":0,"m":0,"b":3},"undead_dragon_unit_id":{"n":"Undead Dragon","i":"UndeadDragon.png","c":"Fighter","v":0,"m":0,"b":0},"fire_lord_unit_id":{"n":"Fire Lord","i":"FireLord.png","c":"Fighter","v":275,"m":0,"b":0},"scorpion_king_unit_id":{"n":"Scorpion King","i":"ScorpionKing.png","c":"Creature","v":0,"m":0,"b":36},"giant_quadrapus_unit_id":{"n":"Giant Quadrapus","i":"GiantQuadrapus.png","c":"Creature","v":0,"m":0,"b":68},"test_mercenary_1_unit_id":{"n":"Test Mercenary","i":"TestMercenary.png","c":"Mercenary","v":0,"m":20,"b":0},"test_mercenary_2_unit_id":{"n":"Test Mercenary 2","i":"TestMercenary2.png","c":"Mercenary","v":0,"m":60,"b":0},"test_fighter_unit_id":{"n":"Test Fighter","i":"TestFighter.png","c":"Fighter","v":50,"m":0,"b":0},"test_fighter_upgrade_unit_id":{"n":"Test Fighter Upgrade","i":"TestFighterUpgrade.png","c":"Fighter","v":100,"m":0,"b":0},"test_mercenary_3_unit_id":{"n":"Test Mercenary 3","i":"TestMercenary3.png","c":"Mercenary","v":0,"m":60,"b":0},"legion_king_unit_id":{"n":"Legion King","i":"LegionKing.png","c":"Creature","v":0,"m":0,"b":120},"chaos_hound_harbinger_unit_id":{"n":"Cerberus","i":"Cerberus.png","c":"Fighter","v":0,"m":0,"b":0},"giant_snail_unit_id":{"n":"Giant Snail","i":"GiantSnail.png","c":"Mercenary","v":0,"m":20,"b":5},"sea_serpent_unit_id":{"n":"Sea Serpent","i":"SeaSerpent.png","c":"Fighter","v":90,"m":0,"b":0},"deepcoiler_unit_id":{"n":"Deepcoiler","i":"Deepcoiler.png","c":"Fighter","v":275,"m":0,"b":0},"pollywog_unit_id":{"n":"Pollywog","i":"Pollywog.png","c":"Fighter","v":15,"m":0,"b":0},"seraphin_unit_id":{"n":"Seraphin","i":"Seraphin.png","c":"Fighter","v":95,"m":0,"b":0},"devilfish_unit_id":{"n":"Devilfish","i":"Devilfish.png","c":"Fighter","v":95,"m":0,"b":0},"angler_unit_id":{"n":"Angler","i":"Angler.png","c":"Fighter","v":40,"m":0,"b":0},"bounty_hunter_unit_id":{"n":"Bounty Hunter","i":"BountyHunter.png","c":"Fighter","v":165,"m":0,"b":0},"kingpin_unit_id":{"n":"Kingpin","i":"Kingpin.png","c":"Fighter","v":415,"m":0,"b":0},"grarl_unit_id":{"n":"Grarl","i":"Grarl.png","c":"Fighter","v":145,"m":0,"b":0},"king_claw_unit_id":{"n":"King Claw","i":"KingClaw.png","c":"Fighter","v":420,"m":0,"b":0},"ocean_templar_unit_id":{"n":"Ocean Templar","i":"OceanTemplar.png","c":"Fighter","v":395,"m":0,"b":0},"priestess_of_the_abyss_unit_id":{"n":"Priestess Of The Abyss","i":"PriestessOfTheAbyss.png","c":"Fighter","v":190,"m":0,"b":0},"azeria_unit_id":{"n":"Azeria","i":"Azeria.png","c":"Fighter","v":540,"m":0,"b":0},"eggsack_unit_id":{"n":"Eggsack","i":"Eggsack.png","c":"Fighter","v":275,"m":0,"b":0},"hydra_unit_id":{"n":"Hydra","i":"Hydra.png","c":"Fighter","v":420,"m":0,"b":0},"siege_ram_unit_id":{"n":"Siege Ram","i":"SiegeRam.png","c":"Mercenary","v":0,"m":320,"b":48},"hydraling_unit_id":{"n":"Hydraling","i":"Hydraling.png","c":"Fighter","v":250,"m":0,"b":0},"looter_unit_id":{"n":"Looter","i":"Looter.png","c":"Fighter","v":10,"m":0,"b":0},"pack_rat_unit_id":{"n":"Pack Rat","i":"PackRat.png","c":"Fighter","v":75,"m":0,"b":0},"pack_rat_nest_unit_id":{"n":"Pack Rat (Footprints)","i":"PackRat(Footprints).png","c":"Fighter","v":75,"m":0,"b":0},"ogre_unit_id":{"n":"Ogre","i":"Ogre.png","c":"Mercenary","v":0,"m":200,"b":30},"harpy_unit_id":{"n":"Harpy","i":"Harpy.png","c":"Fighter","v":35,"m":0,"b":0},"sky_queen_unit_id":{"n":"Sky Queen","i":"SkyQueen.png","c":"Fighter","v":200,"m":0,"b":0},"froggo_unit_id":{"n":"Froggo","i":"Froggo.png","c":"Mercenary","v":0,"m":0,"b":1},"witch_unit_id":{"n":"Witch","i":"Witch.png","c":"Mercenary","v":0,"m":200,"b":28},"warg_unit_id":{"n":"Warg","i":"Warg.png","c":"Fighter","v":85,"m":0,"b":0},"lioness_unit_id":{"n":"Lioness","i":"Lioness.png","c":"Fighter","v":260,"m":0,"b":0},"alpha_male_unit_id":{"n":"Alpha Male","i":"AlphaMale.png","c":"Fighter","v":285,"m":0,"b":0},"desert_pilgrim_unit_id":{"n":"Desert Pilgrim","i":"DesertPilgrim.png","c":"Fighter","v":135,"m":0,"b":0},"lost_chieftain_unit_id":{"n":"Lost Chieftain","i":"LostChieftain.png","c":"Fighter","v":390,"m":0,"b":0},"sand_badger_unit_id":{"n":"Sand Badger","i":"SandBadger.png","c":"Fighter","v":195,"m":0,"b":0},"iron_scales_unit_id":{"n":"Iron Scales","i":"IronScales.png","c":"Fighter","v":530,"m":0,"b":0},"red_eyes_unit_id":{"n":"Red Eyes","i":"RedEyes.png","c":"Fighter","v":690,"m":0,"b":0},"great_boar_unit_id":{"n":"Great Boar","i":"GreatBoar.png","c":"Fighter","v":270,"m":0,"b":0},"cannoneer_unit_id":{"n":"Cannoneer","i":"Cannoneer.png","c":"Mercenary","v":0,"m":100,"b":10},"hybrid_t1_unit_id":{"n":"Hybrid T1","i":"HybridT1.png","c":"Fighter","v":19,"m":0,"b":0},"hybrid_t2_unit_id":{"n":"Hybrid T2","i":"HybridT2.png","c":"Fighter","v":46,"m":0,"b":0},"hybrid_t3_unit_id":{"n":"Hybrid T3","i":"HybridT3.png","c":"Fighter","v":86,"m":0,"b":0},"hybrid_t4_unit_id":{"n":"Hybrid T4","i":"HybridT4.png","c":"Fighter","v":131,"m":0,"b":0},"hybrid_t5_unit_id":{"n":"Hybrid T5","i":"HybridT5.png","c":"Fighter","v":178,"m":0,"b":0},"hybrid_t6_unit_id":{"n":"Hybrid T6","i":"HybridT6.png","c":"Fighter","v":251,"m":0,"b":0},"masked_spirit_unit_id":{"n":"Masked Spirit","i":"MaskedSpirit.png","c":"Fighter","v":25,"m":0,"b":0},"hell_raiser_unit_id":{"n":"Hell Raiser","i":"HellRaiser.png","c":"Fighter","v":215,"m":0,"b":0},"false_maiden_unit_id":{"n":"False Maiden","i":"FalseMaiden.png","c":"Fighter","v":95,"m":0,"b":0},"hell_raiser_buffed_unit_id":{"n":"Hell Raiser","i":"HellRaiser.png","c":"Fighter","v":215,"m":0,"b":0},"nekomata_unit_id":{"n":"Nekomata","i":"Nekomata.png","c":"Fighter","v":60,"m":0,"b":0},"infiltrator_unit_id":{"n":"Infiltrator","i":"Infiltrator.png","c":"Fighter","v":80,"m":0,"b":0},"orchid_unit_id":{"n":"Orchid","i":"Orchid.png","c":"Fighter","v":280,"m":0,"b":0},"blob_unit_id":{"n":"Blob","i":"Blob.png","c":"Creature","v":0,"m":0,"b":2},"eternal_wanderer_unit_id":{"n":"Eternal Wanderer","i":"EternalWanderer.png","c":"Fighter","v":125,"m":0,"b":0},"samurai_soul_unit_id":{"n":"Samurai Soul","i":"SamuraiSoul.png","c":"Fighter","v":400,"m":0,"b":0},"yozora_unit_id":{"n":"Yozora","i":"Yozora.png","c":"Fighter","v":190,"m":0,"b":0},"arctaire_unit_id":{"n":"Arctaire","i":"Arctaire.png","c":"Fighter","v":550,"m":0,"b":0},"soul_gate_unit_id":{"n":"Soul Gate","i":"SoulGate.png","c":"Fighter","v":260,"m":0,"b":0},"hell_gate_unit_id":{"n":"Hell Gate","i":"HellGate.png","c":"Fighter","v":680,"m":0,"b":0},"hellion_unit_id":{"n":"Hellion","i":"Hellion.png","c":"Fighter","v":0,"m":0,"b":0},"elite_hellion_unit_id":{"n":"Elite Hellion","i":"EliteHellion.png","c":"Fighter","v":0,"m":0,"b":0},"nightcrawler_unit_id":{"n":"Nightcrawler","i":"Nightcrawler.png","c":"Fighter","v":0,"m":0,"b":0},"elite_nightcrawler_unit_id":{"n":"Elite Nightcrawler","i":"EliteNightcrawler.png","c":"Fighter","v":0,"m":0,"b":0},"chained_fist_unit_id":{"n":"Chained Fist","i":"ChainedFist.png","c":"Fighter","v":20,"m":0,"b":0},"oathbreaker_unit_id":{"n":"Oathbreaker","i":"Oathbreaker.png","c":"Fighter","v":95,"m":0,"b":0},"golden_buckler_unit_id":{"n":"Golden Buckler","i":"GoldenBuckler.png","c":"Fighter","v":50,"m":0,"b":0},"royal_guard_unit_id":{"n":"Royal Guard","i":"RoyalGuard.png","c":"Fighter","v":185,"m":0,"b":0},"sacred_steed_unit_id":{"n":"Sacred Steed","i":"SacredSteed.png","c":"Fighter","v":80,"m":0,"b":0},"pegasus_unit_id":{"n":"Pegasus","i":"Pegasus.png","c":"Fighter","v":270,"m":0,"b":0},"elite_archer_unit_id":{"n":"Elite Archer","i":"EliteArcher.png","c":"Fighter","v":145,"m":0,"b":0},"trinity_archer_unit_id":{"n":"Trinity Archer","i":"TrinityArcher.png","c":"Fighter","v":410,"m":0,"b":0},"thanatos_unit_id":{"n":"Thanatos","i":"Thanatos.png","c":"Fighter","v":0,"m":0,"b":0},"imp_mercenary_unit_id":{"n":"Imp","i":"Imp.png","c":"Mercenary","v":0,"m":100,"b":8},"radiant_halo_unit_id":{"n":"Radiant Halo","i":"RadiantHalo.png","c":"Fighter","v":200,"m":0,"b":0},"arc_of_justice_unit_id":{"n":"Arc Of Justice","i":"ArcOfJustice.png","c":"Fighter","v":545,"m":0,"b":0},"holy_avenger_unit_id":{"n":"Holy Avenger","i":"HolyAvenger.png","c":"Fighter","v":270,"m":0,"b":0},"sovereign_unit_id":{"n":"Sovereign","i":"Sovereign.png","c":"Fighter","v":700,"m":0,"b":0},"gatling_gun_unit_id":{"n":"Gatling Gun","i":"GatlingGun.png","c":"Fighter","v":190,"m":0,"b":0},"vulcan_cannon_unit_id":{"n":"Vulcan Cannon","i":"VulcanCannon.png","c":"Fighter","v":530,"m":0,"b":0},"seadragon_unit_id":{"n":"Seadragon","i":"Seadragon.png","c":"Fighter","v":95,"m":0,"b":0},"lifebinder_unit_id":{"n":"Lifebinder","i":"Lifebinder.png","c":"Fighter","v":290,"m":0,"b":0},"seedling_unit_id":{"n":"Seedling","i":"Seedling.png","c":"Fighter","v":15,"m":0,"b":0},"chloropixie_unit_id":{"n":"Chloropixie","i":"Chloropixie.png","c":"Fighter","v":100,"m":0,"b":0},"sakura_unit_id":{"n":"Sakura","i":"Sakura.png","c":"Fighter","v":250,"m":0,"b":0},"cursed_casket_unit_id":{"n":"Cursed Casket","i":"CursedCasket.png","c":"Fighter","v":130,"m":0,"b":0},"cage_of_pain_unit_id":{"n":"Cage Of Pain","i":"CageOfPain.png","c":"Fighter","v":230,"m":0,"b":0},"iron_maiden_unit_id":{"n":"Iron Maiden","i":"IronMaiden.png","c":"Fighter","v":330,"m":0,"b":0},"dancing_snake_unit_id":{"n":"Dancing Snake","i":"DancingSnake.png","c":"Mercenary","v":0,"m":0,"b":2},"annihilator_unit_id":{"n":"Annihilator","i":"Annihilator.png","c":"Fighter","v":190,"m":0,"b":0},"giga_annihilator_unit_id":{"n":"Giga Annihilator","i":"GigaAnnihilator.png","c":"Fighter","v":530,"m":0,"b":0},"slime_larva_unit_id":{"n":"Slime Larva","i":"SlimeLarva.png","c":"Fighter","v":50,"m":0,"b":0},"slime_siren_unit_id":{"n":"Slime Siren","i":"SlimeSiren.png","c":"Fighter","v":175,"m":0,"b":0},"mini_slime_unit_id":{"n":"Mini Slime","i":"MiniSlime.png","c":"Fighter","v":50,"m":0,"b":0},"needler_unit_id":{"n":"Needler","i":"Needler.png","c":"Mercenary","v":0,"m":360,"b":54},"shadow_dancer_unit_id":{"n":"Shadow Dancer","i":"ShadowDancer.png","c":"Fighter","v":270,"m":0,"b":0},"dread_knight_unit_id":{"n":"Dread Knight","i":"DreadKnight.png","c":"Fighter","v":685,"m":0,"b":0},"shadow_dancer_clone_unit_id":{"n":"Shadow Dancer","i":"ShadowDancer.png","c":"Fighter","v":270,"m":0,"b":0},"dread_knight_clone_unit_id":{"n":"Dread Knight","i":"DreadKnight.png","c":"Fighter","v":415,"m":0,"b":0},"treant_unit_id":{"n":"Treant","i":"Treant.png","c":"Fighter","v":100,"m":0,"b":0},"tree_of_life_unit_id":{"n":"Tree Of Life","i":"TreeOfLife.png","c":"Fighter","v":295,"m":0,"b":0},"tree_of_knowledge_unit_id":{"n":"Tree Of Knowledge","i":"TreeOfKnowledge.png","c":"Fighter","v":280,"m":0,"b":0},"howler_unit_id":{"n":"Howler","i":"Howler.png","c":"Fighter","v":35,"m":0,"b":0},"sunfang_unit_id":{"n":"Sunfang","i":"Sunfang.png","c":"Fighter","v":195,"m":0,"b":0},"pulsebot_unit_id":{"n":"Pulsebot","i":"Pulsebot.png","c":"Fighter","v":185,"m":0,"b":0},"skybot_unit_id":{"n":"Skybot","i":"Skybot.png","c":"Fighter","v":540,"m":0,"b":0},"dwarf_banker_unit_id":{"n":"Dwarf Banker","i":"DwarfBanker.png","c":"Fighter","v":95,"m":0,"b":0},"big_wig_unit_id":{"n":"Big Wig","i":"BigWig.png","c":"Fighter","v":280,"m":0,"b":0},"honey_bear_unit_id":{"n":"Honey Bear","i":"HoneyBear.png","c":"Mercenary","v":0,"m":180,"b":27},"pirate_skeleton_unit_id":{"n":"Pirate Skeleton","i":"PirateSkeleton.png","c":"Fighter","v":80,"m":0,"b":0},"spectral_scallywag_unit_id":{"n":"Spectral Scallywag","i":"SpectralScallywag.png","c":"Fighter","v":270,"m":0,"b":0},"crab_warlock_unit_id":{"n":"Crab Warlock","i":"CrabWarlock.png","c":"Fighter","v":140,"m":0,"b":0},"crabomancer_unit_id":{"n":"Crabomancer","i":"Crabomancer.png","c":"Fighter","v":400,"m":0,"b":0},"goblin_copter_unit_id":{"n":"Goblin Copter","i":"GoblinCopter.png","c":"Fighter","v":20,"m":0,"b":0},"whirlybird_unit_id":{"n":"Whirlybird","i":"Whirlybird.png","c":"Fighter","v":120,"m":0,"b":0},"robo_unit_id":{"n":"Robo","i":"Robo.png","c":"Mercenary","v":0,"m":40,"b":6},"warp_wing_unit_id":{"n":"Warp Wing","i":"WarpWing.png","c":"Fighter","v":145,"m":0,"b":0},"void_manta_unit_id":{"n":"Void Manta","i":"VoidManta.png","c":"Fighter","v":415,"m":0,"b":0},"crawling_catapult_unit_id":{"n":"Crawling Catapult","i":"CrawlingCatapult.png","c":"Fighter","v":265,"m":0,"b":0},"wandering_trebuchet_unit_id":{"n":"Wandering Trebuchet","i":"WanderingTrebuchet.png","c":"Fighter","v":690,"m":0,"b":0},"crabling_unit_id":{"n":"Crabling","i":"Crabling.png","c":"Fighter","v":50,"m":0,"b":0},"pincer_unit_id":{"n":"Pincer","i":"Pincer.png","c":"Fighter","v":50,"m":0,"b":0},"oathbreaker_final_form_unit_id":{"n":"Oathbreaker Final Form","i":"OathbreakerFinalForm.png","c":"Fighter","v":295,"m":0,"b":0},"nucleus_unit_id":{"n":"Nucleus","i":"Nucleus.png","c":"Fighter","v":265,"m":0,"b":0},"pipsqueak_unit_id":{"n":"Pipsqueak","i":"Pipsqueak.png","c":"Fighter","v":155,"m":0,"b":0},"lumerian_unit_id":{"n":"Lumerian","i":"Lumerian.png","c":"Fighter","v":415,"m":0,"b":0},"sheep_unit_id":{"n":"Sheep","i":"Sheep.png","c":"Fighter","v":20,"m":0,"b":0},"scrappy_unit_id":{"n":"Scrappy","i":"Scrappy.png","c":"Fighter","v":90,"m":0,"b":0},"heroic_scrappy_unit_id":{"n":"Super Scrappy","i":"SuperScrappy.png","c":"Fighter","v":280,"m":0,"b":0},"mr_brewpot_unit_id":{"n":"Mr Brewpot","i":"MrBrewpot.png","c":"Fighter","v":285,"m":0,"b":0},"heroic_mr_brewpot_unit_id":{"n":"Dr Brewpot","i":"DrBrewpot.png","c":"Fighter","v":700,"m":0,"b":0},"rift_trader_unit_id":{"n":"Rift Trader","i":"RiftTrader.png","c":"Fighter","v":55,"m":0,"b":0},"heroic_rift_trader_unit_id":{"n":"Rift Baron","i":"RiftBaron.png","c":"Fighter","v":185,"m":0,"b":0}},"waveReward":[72,84,90,96,108,114,120,132,144,150,156,168,180,192,204,216,228,252,276,300,360]};
+const UBY=UNITS.units||{}, UBN={};
+Object.values(UBY).forEach(u=>{if(!UBN[u.n])UBN[u.n]=u});
+const ZHN=Object.fromEntries([...MERCS.map(m=>[m.en,m.zh]),...WAVES.map(w=>[w.en,w.zh])]);
+const SEND_TO={1:5,2:6,5:2,6:1};   // 範例對局以 sent／received 與王升級欄位交叉驗證
+const KUP=[["Upgrade King Attack","攻擊"],["Upgrade King Regen","回血"],["Upgrade King Spell","法術"]];
+const pascal=s=>String(s).replace(/[^A-Za-z0-9 ]/g,"").split(" ").filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1)).join("");
+const cdn=f=>"https://cdn.legiontd2.com/icons/"+f;
+const unitOf=k=>UBY[k]||UBN[k]||null;
+const nameOf=k=>{const u=unitOf(k),n=u?u.n:String(k).replace(/_unit_id$/,"").replace(/_/g," ");return ZHN[n]||n};
+const iconOf=k=>{const u=unitOf(k);return cdn(u&&u.i?u.i:pascal(String(k).replace(/_unit_id$/,"").replace(/_/g," "))+".png")};
+const img=(src,title,cls="ico s")=>`<img class="${cls}" src="${esc(src)}" alt="${esc(title)}" title="${esc(title)}" loading="lazy" onerror="this.style.visibility='hidden'">`;
+const at=(a,i)=>Array.isArray(a)&&i<a.length?a[i]:null;   // 中離者的陣列可能較短
+let R=null, rw=0;
+
+function rmsg(t,bad){const m=$("#rmsg");m.textContent=t;m.style.color=bad?"var(--bad)":""}
+async function loadMatch(){
+  const m=$("#rid").value.match(/[0-9a-f]{64}/i);
+  if(!m){rmsg("找不到對局 ID：應該是 64 碼的英數字。",1);return}
+  const id=m[0].toLowerCase();
+  rmsg("撈取中…");$("#rgo").disabled=true;
+  try{
+    const res=await fetch(REPLAY_API+id);
+    if(res.status===404){rmsg("找不到這場對局：ID 有誤，或已超過官方保留的一年。",1);return}
+    if(!res.ok){rmsg(`撈取失敗（HTTP ${res.status}），稍後再試。`,1);return}
+    const g=await res.json();
+    const P=(g.playersData||[]).slice().sort((a,b)=>a.playerSlot-b.playerSlot);
+    if(P.length!==4||P.some(p=>!SEND_TO[p.playerSlot])){rmsg(`這場是 ${g.queueType}（${P.length} 人），目前只支援 2v2 排位。`,1);return}
+    R={g,P,by:Object.fromEntries(P.map(p=>[p.playerSlot,p]))};rw=0;
+    store.set("ltd2-match",id);
+    rmsg(`已載入 ${id.slice(0,10)}…`);
+    renderReplay();
+  }catch(e){rmsg("連線失敗，檢查網路後再試。",1)}
+  finally{$("#rgo").disabled=false}
+}
+
+function mythOf(list){return (list||[]).reduce((s,n)=>s+((unitOf(n)||{}).m||0),0)}
+function unitsRow(list){return (list||[]).length?list.map(n=>img(iconOf(n),nameOf(n))).join(""):`<span class="small muted">—</span>`}
+
+function laneHTML(p){
+  const w=rw,g=R.g,to=R.by[SEND_TO[p.playerSlot]],from=R.P.find(q=>SEND_TO[q.playerSlot]===p.playerSlot);
+  const sent=at(p.mercenariesSentPerWave,w)||[],recv=at(p.mercenariesReceivedPerWave,w)||[],leaks=at(p.leaksPerWave,w)||[];
+  const reward=at(UNITS.waveReward,w);
+  const leakGold=leaks.reduce((s,n)=>s+((unitOf(n)||{}).b||0),0);
+  const leakPct=leaks.length?(reward?Math.round(leakGold/reward*100)+"%":"?"):"0%";
+  const v=(a,f=x=>x)=>{const x=at(a,w);return x==null?"—":f(x)};
+  const board=(at(p.buildPerWave,w)||[]).map(s=>{
+    const [id,pos,stage]=s.split(":"),[x,y]=pos.split("|").map(Number);
+    return `<img src="${esc(iconOf(id))}" alt="${esc(nameOf(id))}" title="${esc(nameOf(id))}（stage ${esc(stage)}）" loading="lazy" onerror="this.style.visibility='hidden'" style="left:${(x-0.5)/9*100}%;top:${(13.5-y)/14*100}%">`}).join("");
+  const rolls=(p.rolls||"").split(",").map(r=>r.trim()).filter(Boolean);
+  return `<div class="card">
+    <div class="lanehead">${img(cdn(pascal(p.legion)+".png"),p.legion,"ico")}<b>${esc(p.playerName)}</b>
+      <span class="pill${p.gameResult==="won"?" new":""}">${p.gameResult==="won"?"勝":"敗"}</span>${p.stayedUntilEnd===false?'<span class="pill boss">中離</span>':""}
+      <span class="small muted" style="margin-left:auto">${p.overallElo??""}</span></div>
+    <div class="lrow"><span>${esc(LEGZH[p.legion]||p.legion)} · spell</span><span class="icons">${p.chosenSpell&&p.chosenSpell!=="none"?img(cdn(pascal(p.chosenSpell)+".png"),p.chosenSpell):"—"}</span></div>
+    <div class="lrow"><span>骰到</span><span class="icons">${rolls.length?rolls.map(r=>img(iconOf(r),nameOf(r))).join(""):"—"}</span></div>
+    <div class="stats"><div><b>${v(p.valuePerWave)}</b><span>戰士價值</span></div><div><b>${v(p.workersPerWave,Math.round)}</b><span>工人</span></div><div><b>${v(p.incomePerWave)}</b><span>收入</span></div><div><b>${v(p.netWorthPerWave)}</b><span>淨值</span></div></div>
+    <div class="board" aria-label="第 ${w+1} 波佈陣">${board}</div>
+    <div class="lrow"><span>送出 → ${esc(to?to.playerName:"?")}</span><span class="v">${mythOf(sent)} 秘晶</span></div>
+    <div class="icons">${unitsRow(sent)}</div>
+    <div class="lrow"><span>收到 ← ${esc(from?from.playerName:"?")}</span><span class="v">${mythOf(recv)} 秘晶</span></div>
+    <div class="icons">${unitsRow(recv)}</div>
+    <div class="lrow"><span>漏怪</span><span class="${leaks.length?"leak":"v"}">${leakPct}</span></div>
+    <div class="icons">${unitsRow(leaks)}</div>
+    <div class="verdict">原則判斷：待定</div>
+  </div>`;
+}
+
+function kingHTML(side){
+  const g=R.g,ps=R.P.filter(p=>side==="left"?p.playerSlot<=2:p.playerSlot>=5);
+  const hp=at(side==="left"?g.leftKingPercentHp:g.rightKingPercentHp,rw);
+  const cnt=Object.fromEntries(KUP.map(([k])=>[k,0]));
+  ps.forEach(p=>(p.kingUpgradesPerWave||[]).slice(0,rw+1).forEach(l=>(l||[]).forEach(u=>{if(u in cnt)cnt[u]++})));
+  const pc=hp==null?null:Math.round(hp*100);
+  return `<div style="display:flex;flex-direction:column;gap:4px">
+    <div class="lrow"><span>${side==="left"?"左方":"右方"}：${ps.map(p=>esc(p.playerName)).join("＋")}</span><span class="v">${pc==null?"—":pc+"%"}</span></div>
+    <div class="kbar"><span style="width:${pc??0}%"></span></div>
+    <div class="small muted">國王升級累計：${KUP.map(([k,z])=>`${z} ${cnt[k]}`).join("、")}</div></div>`;
+}
+
+function renderReplay(){
+  if(!R)return;
+  const g=R.g,n=g.endingWave||(R.P[0].valuePerWave||[]).length;
+  const date=new Date(g.date);
+  $("#rview").innerHTML=`<div class="panel">
+      <div class="controls" style="justify-content:space-between"><h2>第 ${rw+1} 波</h2><span class="small muted">← → 鍵切換波次</span></div>
+      <div class="wavepick" id="rwaves">${Array.from({length:n},(_,i)=>`<button type="button" data-w="${i}" aria-pressed="${i===rw}">${i+1}</button>`).join("")}</div>
+      <h3>波末王血</h3>
+      <div class="kings">${kingHTML("left")}${kingHTML("right")}</div>
+    </div>
+    <div class="scroll"><div class="lanes">${R.P.map(laneHTML).join("")}</div></div>
+    <div class="panel small">
+      <div class="controls" style="gap:4px 18px"><span>模式 <b>${g.queueType==="Normal"?"2v2 排位":esc(g.queueType)}</b></span><span>日期 <b>${isNaN(date)?"—":date.toLocaleString("zh-TW",{hour12:false})}</b></span><span>版本 <b>${esc(g.version)}</b></span><span>對局 elo <b>${g.gameElo??"—"}</b></span><span>時長 <b>${Math.round((g.gameLength||0)/60)} 分</b></span><span>結束於第 <b>${n}</b> 波</span></div>
+      <p class="note">送出／收到是「這一波上場」的傭兵，可能是上一波戰鬥中就僱好的；收入在僱用當下就增加，所以會比送出早一波反映。少數傭兵（例如 Robo）在官方紀錄裡，送出與對方收到會落在不同波，總數仍相同。王血是每波打完時的剩餘血量。漏怪 % = 漏掉單位的官方賞金 ÷ 這一波怪物的總賞金；漏掉的傭兵也算進分子，所以收到大量傭兵時可能超過 100%。單位資料對照 ${esc(UNITS.version||"—")}。</p>
+    </div>`;
+  document.querySelectorAll("#rwaves button").forEach(b=>b.addEventListener("click",()=>{rw=+b.dataset.w;renderReplay()}));
+}
+
+$("#rgo").addEventListener("click",loadMatch);
+$("#rid").addEventListener("keydown",e=>{if(e.key==="Enter")loadMatch()});
+document.addEventListener("keydown",e=>{
+  if(!R||$('[data-sec="replay"]').hidden||e.target.closest("input,select,textarea"))return;
+  const n=R.g.endingWave||1;
+  if(e.key==="ArrowRight"&&rw<n-1){rw++;renderReplay()}
+  else if(e.key==="ArrowLeft"&&rw>0){rw--;renderReplay()}
+});
+{const id=store.get("ltd2-match");if(id)$("#rid").value=id}
 
 renderMatrix();renderFighters();renderMercs();renderWaves();renderPlan();
 {const t=store.get("ltd2-tab");if(t&&document.querySelector(`[data-sec="${t}"]`))showTab(t)}
