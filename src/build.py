@@ -1,6 +1,6 @@
 import json, pathlib
 d = pathlib.Path(__file__).parent
-rows = json.loads((d / "fighters_wiki.json").read_text())
+rows = json.loads((d / "fighters_wiki.json").read_text(encoding="utf-8"))
 NEW = "新單位"
 rows += [
  ["Pulsebot",NEW,185,0,"5","Off-tank","Skybot","Impact","Fortified","EMP: Each attack splits its damage among enemies near the target, +10% damage per enemy hit; applies -1% defense (3s, up to 15 stacks).","Melee. Added v12.02 (2025-03)."],
@@ -20,7 +20,18 @@ rows += [
 for r in rows:
     if r[0] == "Atom": r[6] = "Nucleus"
 out = [{"n":r[0],"leg":r[1],"cost":r[2],"val":r[3] or r[2],"tier":r[4],"role":r[5],"up":r[6],"atk":r[7],"def":r[8],"ab":r[9],"note":r[10]} for r in rows]
-html = (d / "ltd2-db.src.html").read_text()
+units = (d.parent / "data" / "units.json").read_text(encoding="utf-8")  # 由 fetch_units.py 產生
+html = (d / "ltd2-db.src.html").read_text(encoding="utf-8")
 html = html.replace("/*__FIGHTERS__*/[]", json.dumps(out, ensure_ascii=False))
-(d / "ltd2-db.html").write_text(html)
-print(len(out), "fighters", len(html), "bytes")
+html = html.replace("/*__UNITS__*/{}", units)
+# GitHub 版沒有 claude.ai 的共用資料，提示改寫成對應的說法
+html = html.replace("本機草稿（共用資料未連線）", "本機草稿（陣容只存在你的瀏覽器）")
+html = html.replace("共用資料未連線，派兵紀錄需要登入 claude.ai 開啟這個頁面才能使用。",
+                    "這個版本沒有共用資料，派兵紀錄只在 claude.ai 上的版本可以使用。")
+HEAD = ('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
+        '<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}'
+        'body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body>')
+page = HEAD + html.rstrip("\n") + "\n</body></html>"
+(d.parent / "index.html").write_text(page, encoding="utf-8", newline="\n")
+print(len(out), "fighters", len(page), "bytes -> index.html")
