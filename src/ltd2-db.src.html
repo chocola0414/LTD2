@@ -1,0 +1,596 @@
+<title>Legion TD 2 戰術資料庫</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: field-manual tool — sticky header with tabs; send calculator first (wave + opponent lineup + budget → merc plan), reference tables after */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#18232b; --muted:#5b6973; --line:#d3dade;
+  --accent:#1f6fb2; --accent-ink:#ffffff; --accent-soft:#dcebf7;
+  --good:#1d7a46; --good-soft:#dcf1e4; --bad:#b23a2b; --bad-soft:#f8e1dd; --flat:#6b7680;
+  --t-pierce:#b07a10; --t-impact:#b0452b; --t-magic:#6d44b8; --t-pure:#6f6a5c;
+  --t-swift:#1f7fa8; --t-natural:#3c8a35; --t-fortified:#5a6672; --t-arcane:#a03c86; --t-immaterial:#7d7f86;
+  --f-display:"Saira Condensed","Noto Sans TC",system-ui,sans-serif;
+  --f-body:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f161b; --panel:#172129; --ink:#e3e9ed; --muted:#94a3ad; --line:#2a3741;
+  --accent:#5aa9e6; --accent-ink:#0b1318; --accent-soft:#183247;
+  --good:#5fcf8b; --good-soft:#163526; --bad:#f08572; --bad-soft:#3d1f1a; --flat:#8d98a1;
+  --t-pierce:#e3b04b; --t-impact:#ec8061; --t-magic:#ad8cf0; --t-pure:#c9c3b0;
+  --t-swift:#5bbde6; --t-natural:#7cc96f; --t-fortified:#9aa8b5; --t-arcane:#e07cc6; --t-immaterial:#b2b4bb;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f161b; --panel:#172129; --ink:#e3e9ed; --muted:#94a3ad; --line:#2a3741;
+  --accent:#5aa9e6; --accent-ink:#0b1318; --accent-soft:#183247;
+  --good:#5fcf8b; --good-soft:#163526; --bad:#f08572; --bad-soft:#3d1f1a; --flat:#8d98a1;
+  --t-pierce:#e3b04b; --t-impact:#ec8061; --t-magic:#ad8cf0; --t-pure:#c9c3b0;
+  --t-swift:#5bbde6; --t-natural:#7cc96f; --t-fortified:#9aa8b5; --t-arcane:#e07cc6; --t-immaterial:#b2b4bb;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:20px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+header.top .in{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:12px 0;display:flex;flex-direction:column;gap:8px}
+.brand{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.brand h1{font-family:var(--f-display);font-weight:700;font-size:1.7rem;letter-spacing:.02em;margin:0;line-height:1.1}
+.brand .ver{font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
+nav.tabs{display:flex;gap:2px;overflow-x:auto}
+nav.tabs button{font:inherit;font-weight:500;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:8px 14px;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h2{font-family:var(--f-display);font-weight:700;font-size:1.35rem;letter-spacing:.02em;margin:0;text-wrap:balance}
+h3{font-size:.8rem;letter-spacing:.08em;color:var(--muted);font-weight:500;margin:0}
+.lede{color:var(--muted);margin:0;max-width:70ch}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:.75rem;letter-spacing:.06em;color:var(--muted);font-weight:500;white-space:nowrap}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--ink)}
+td.num,th.num{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+tr.hl td{background:var(--accent-soft)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:.8rem;font-weight:500;white-space:nowrap}
+.chip::before{content:"";width:9px;height:9px;border-radius:2px;background:currentColor}
+.chip.def::before{border-radius:50%}
+.c-Pierce{color:var(--t-pierce)}.c-Impact{color:var(--t-impact)}.c-Magic{color:var(--t-magic)}.c-Pure{color:var(--t-pure)}
+.c-Swift{color:var(--t-swift)}.c-Natural{color:var(--t-natural)}.c-Fortified{color:var(--t-fortified)}.c-Arcane{color:var(--t-arcane)}.c-Immaterial{color:var(--t-immaterial)}
+.b-Pierce{background:var(--t-pierce)}.b-Impact{background:var(--t-impact)}.b-Magic{background:var(--t-magic)}.b-Pure{background:var(--t-pure)}
+.b-Swift{background:var(--t-swift)}.b-Natural{background:var(--t-natural)}.b-Fortified{background:var(--t-fortified)}.b-Arcane{background:var(--t-arcane)}.b-Immaterial{background:var(--t-immaterial)}
+.mult{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-weight:600;text-align:center;border-radius:4px}
+.m-up{background:var(--good-soft);color:var(--good)}
+.m-down{background:var(--bad-soft);color:var(--bad)}
+.m-flat{color:var(--flat)}
+.matrix td,.matrix th{text-align:center}
+.matrix th:first-child,.matrix td:first-child{text-align:left}
+.pill{display:inline-block;font-size:.72rem;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.pill.boss{border-color:var(--bad);color:var(--bad)}
+.pill.fly{border-color:var(--accent);color:var(--accent)}
+.pill.rng{border-color:var(--t-pierce);color:var(--t-pierce)}
+.pill.new{border-color:var(--good);color:var(--good)}
+.muted{color:var(--muted)}
+.small{font-size:.82rem}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+select,input[type="search"],input[type="number"],input[type="text"]{font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 10px;min-width:0}
+input[type="search"],input[type="text"]{flex:1 1 200px}
+input[type="number"]{width:110px;font-family:var(--f-mono)}
+.btn{font:inherit;font-size:.88rem;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:6px 12px;cursor:pointer}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:hover{border-color:var(--accent)}
+.wavepick{display:flex;flex-wrap:wrap;gap:6px}
+.wavepick button{font-family:var(--f-mono);font-size:.85rem;width:40px;height:36px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.wavepick button.boss{border-color:var(--bad)}
+.wavepick button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.rank{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}
+.rank li{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.wavehead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.wavehead .big{font-family:var(--f-display);font-size:1.6rem;font-weight:700;line-height:1}
+.note{border-left:3px solid var(--line);padding-left:12px;color:var(--muted);font-size:.85rem;max-width:80ch;margin:0}
+.lineup{display:flex;flex-wrap:wrap;gap:6px}
+.unit{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:6px;padding:3px 4px 3px 8px;font-size:.85rem;background:var(--bg)}
+.unit .cnt{font-family:var(--f-mono);font-weight:600}
+.unit button{font:inherit;line-height:1;border:0;background:none;color:var(--muted);cursor:pointer;padding:2px 5px;border-radius:4px}
+.unit button:hover{color:var(--ink);background:var(--panel)}
+.stack{display:flex;height:22px;border-radius:4px;overflow:hidden;border:1px solid var(--line)}
+.stack span{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.8rem}
+.combo{display:flex;flex-direction:column;gap:4px}
+.combo .row{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:.88rem}
+.combo .tot{border-top:1px solid var(--line);padding-top:6px;font-family:var(--f-mono);font-size:.85rem;display:flex;justify-content:space-between}
+.sources a,td a{color:var(--accent)}
+section[hidden]{display:none!important}
+@media (max-width:520px){th,td{padding:6px 7px}.brand h1{font-size:1.4rem}}
+</style>
+
+<header class="top"><div class="in">
+  <div class="brand"><h1>Legion TD 2 戰術資料庫</h1><span class="ver">wiki + Steam 更新公告 · 對照至 v26.9（2026-09）</span></div>
+  <nav class="tabs" role="tablist" aria-label="資料分頁">
+    <button role="tab" id="tab-plan" aria-selected="true" data-tab="plan">派兵計算</button>
+    <button role="tab" id="tab-fighters" aria-selected="false" data-tab="fighters">戰士</button>
+    <button role="tab" id="tab-mercs" aria-selected="false" data-tab="mercs">傭兵</button>
+    <button role="tab" id="tab-waves" aria-selected="false" data-tab="waves">波次怪物</button>
+    <button role="tab" id="tab-matrix" aria-selected="false" data-tab="matrix">屬性相剋</button>
+    <button role="tab" id="tab-notes" aria-selected="false" data-tab="notes">版本與來源</button>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+<section data-sec="plan" style="display:flex;flex-direction:column;gap:16px">
+  <div class="panel">
+    <h2>1. 下一波是第幾波</h2>
+    <div class="wavepick" id="wavepick" aria-label="選擇波次"></div>
+    <div id="waveinfo"></div>
+  </div>
+  <div class="panel">
+    <div class="controls" style="justify-content:space-between">
+      <h2>2. 對手陣容</h2>
+      <span class="small muted" id="syncstatus">本機草稿</span>
+    </div>
+    <div class="controls">
+      <select id="boardsel" aria-label="選擇共用陣容"><option value="">本機草稿（未共用）</option></select>
+      <input type="text" id="newname" placeholder="新陣容名稱，例如對手 ID" aria-label="新陣容名稱" style="flex:1 1 160px">
+      <button class="btn" id="newboard" type="button">存成共用陣容</button>
+      <button class="btn" id="delboard" type="button" hidden>刪除此陣容</button>
+      <span id="delconfirm" class="controls small" hidden>確定刪除？<button class="btn" id="delyes" type="button">刪除</button><button class="btn" id="delno" type="button">取消</button></span>
+    </div>
+    <div class="controls">
+      <input type="text" id="addq" list="fighterlist" placeholder="輸入戰士名稱，例如 Sovereign" aria-label="加入對手戰士">
+      <datalist id="fighterlist"></datalist>
+      <button class="btn primary" id="addbtn" type="button">加入</button>
+      <button class="btn" id="examplebtn" type="button">載入範例</button>
+      <button class="btn" id="clearbtn" type="button">清空</button>
+    </div>
+    <div class="lineup" id="lineup"></div>
+    <div id="profile"></div>
+  </div>
+  <div class="panel">
+    <div class="controls" style="justify-content:space-between">
+      <h2>3. 派兵建議</h2>
+      <span class="controls">
+        <label class="small muted" for="mode">目的 <select id="mode"><option value="power">破防（強力傭兵）</option><option value="income">漲收入（收入型傭兵）</option><option value="any">不限</option></select></label>
+        <label class="small muted" for="budget">秘晶預算 <input type="number" id="budget" min="20" max="2000" step="20" value="720"></label>
+      </span>
+    </div>
+    <div id="plan"></div>
+  </div>
+  <div class="grid2" id="defcards"></div>
+  <div class="panel">
+    <div class="controls" style="justify-content:space-between">
+      <h2>4. 派兵紀錄</h2>
+      <span class="small muted">隊友共用，即時更新</span>
+    </div>
+    <div id="sends"></div>
+  </div>
+</section>
+
+<section data-sec="fighters" hidden>
+  <div class="panel">
+    <h2>戰士圖鑑（<span id="fcount"></span> 隻）</h2>
+    <div class="controls">
+      <input type="search" id="fq" placeholder="搜尋名稱或能力" aria-label="搜尋戰士">
+      <select id="fleg" aria-label="篩選陣營"><option value="">全部陣營</option></select>
+      <select id="ffa" aria-label="篩選攻擊類型"><option value="">全部攻擊</option></select>
+      <select id="ffd" aria-label="篩選護甲類型"><option value="">全部護甲</option></select>
+    </div>
+    <div class="scroll"><table id="ftable"></table></div>
+    <p class="small muted" style="margin:0">成本欄是這一階要花的金幣，總價值是從第一階升上來的累計。標「新」的單位 wiki 尚未收錄，資料取自 Steam 更新公告。點名稱可開官方頭像，方便對照截圖。</p>
+  </div>
+</section>
+
+<section data-sec="mercs" hidden>
+  <div class="panel">
+    <h2>傭兵一覽（24 隻）</h2>
+    <div class="controls">
+      <input type="search" id="mq" placeholder="搜尋名稱或能力" aria-label="搜尋傭兵">
+      <select id="mfa" aria-label="篩選攻擊類型"><option value="">全部攻擊</option></select>
+      <select id="mfd" aria-label="篩選護甲類型"><option value="">全部護甲</option></select>
+      <select id="mfr" aria-label="篩選站位"><option value="">全部站位</option><option>坦克</option><option>近戰</option><option>遠程</option></select>
+    </div>
+    <div class="scroll"><table id="merctable"></table></div>
+    <p class="small muted" style="margin:0">能力說明已對照到 v26.9 的更新公告。收入率 = 收入 ÷ 秘晶成本。坦克生成在怪群前方、近戰在怪群中、遠程在後方。</p>
+  </div>
+</section>
+
+<section data-sec="waves" hidden>
+  <div class="panel">
+    <h2>1–21 波怪物</h2>
+    <div class="scroll"><table id="wavetable"></table></div>
+    <p class="small muted" style="margin:0">血量、攻擊力每個版本都在微調，遊戲內輸入 <code>-info 波次</code>（例如 <code>-info 13</code>）可看當前數值。</p>
+  </div>
+</section>
+
+<section data-sec="matrix" hidden>
+  <div class="panel">
+    <h2>攻擊類型 × 護甲類型 傷害倍率</h2>
+    <p class="lede">傷害 = 攻擊力 × 倍率。綠色是克制、紅色是被克。遊戲內按 F11 也能叫出這張表。</p>
+    <div class="scroll"><table class="matrix" id="matrix"></table></div>
+  </div>
+</section>
+
+<section data-sec="notes" hidden>
+  <div class="panel">
+    <h2>版本與資料可信度</h2>
+    <ul style="margin:0;padding-left:18px;max-width:80ch">
+      <li>戰士屬性、成本取自 wiki；wiki 多數頁面停在 2022–2024 年，所以另外逐篇讀了 2024-01 到 2026-09 的 Steam 更新公告，補上 13 隻新單位、Fire Elemental 改成魔法攻擊等變動。</li>
+      <li>公告裡的數值改動多是百分比微調，這裡只記會影響判斷的部分：屬性、能力機制、光環數值。</li>
+      <li>派兵計算只算屬性相剋，沒有模擬單位能力、站位和血量。像 Fire Lord 的護盾、Head Chef 的吸血、範圍傷害單位，仍要搭配傭兵能力一起判斷。</li>
+      <li>傭兵和怪物的平衡改動頻繁，精確數值以遊戲內 <code>-info</code> 為準。</li>
+      <li>共用陣容和派兵紀錄存在這個頁面的共用資料裡：有「參與者」以上權限的人可以新增和修改，「檢視者」只能看。分頁、本機草稿只存在你自己的瀏覽器。</li>
+    </ul>
+    <div class="sources small">
+      <h3 style="margin-bottom:6px">來源</h3>
+      <ul style="margin:0;padding-left:18px">
+        <li><a href="https://legiontd2.wiki.gg/wiki/Fighter" target="_blank" rel="noopener">Fighter – Legion TD 2 Wiki</a>（各戰士頁面）</li>
+        <li><a href="https://legiontd2.wiki.gg/wiki/Attack_%26_Defense_Types" target="_blank" rel="noopener">Attack &amp; Defense Types – Legion TD 2 Wiki</a></li>
+        <li><a href="https://legiontd2.wiki.gg/wiki/Mercenary" target="_blank" rel="noopener">Mercenary – Legion TD 2 Wiki</a></li>
+        <li><a href="https://legiontd2.wiki.gg/wiki/Wave" target="_blank" rel="noopener">Wave – Legion TD 2 Wiki</a></li>
+        <li><a href="https://store.steampowered.com/news/app/469600" target="_blank" rel="noopener">Legion TD 2 Steam 更新公告（v11.00 – v26.9）</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+const ATK=["Pierce","Impact","Magic","Pure"];
+const DEF=["Swift","Natural","Fortified","Arcane","Immaterial"];
+const ZH={Pierce:"穿刺",Impact:"衝擊",Magic:"魔法",Pure:"純粹",Swift:"迅捷",Natural:"自然",Fortified:"堅固",Arcane:"奧術",Immaterial:"無形"};
+const LEGZH={Mastermind:"Mastermind",Element:"元素",Mech:"機械",Forsaken:"亡者",Grove:"森林",Atlantean:"亞特蘭提斯",Nomad:"遊牧",Shrine:"神社",Divine:"神聖","新單位":"新單位"};
+const M={
+  Pierce:{Swift:1.20,Natural:0.85,Fortified:0.80,Arcane:1.15,Immaterial:1},
+  Impact:{Swift:0.80,Natural:0.90,Fortified:1.15,Arcane:1.15,Immaterial:1},
+  Magic:{Swift:1.00,Natural:1.25,Fortified:1.05,Arcane:0.75,Immaterial:1},
+  Pure:{Swift:1,Natural:1,Fortified:1,Arcane:1,Immaterial:1}
+};
+const FIGHTERS=/*__FIGHTERS__*/[];
+const FBY=Object.fromEntries(FIGHTERS.map(f=>[f.n.toLowerCase(),f]));
+
+const MERCS=[
+ ["Snail","蝸牛",20,6,"Impact","Fortified","坦克","無特殊能力，主要拿來漲收入。大量送可拖住慢速高傷單位"],
+ ["Robo","機器人",40,10,"Magic","Fortified","遠程","強力傭兵，遠距噴火"],
+ ["Lizard","蜥蜴",40,12,"Pierce","Natural","遠程","便宜的遠程穿刺輸出，剋早期迅捷／奧術開局"],
+ ["Dragon Turtle","龍龜",40,12,"Magic","Arcane","坦克","便宜的坦"],
+ ["Brute","蠻兵",60,15,"Impact","Natural","近戰","Maul：攻擊使目標攻速 −15%，不疊加（v12.01 改版），單打大隻更有效"],
+ ["Fiend","魔鬼",60,18,"Pierce","Swift","坦克","很坦的便宜坦克"],
+ ["Hermit","隱士",80,20,"Magic","Natural","遠程","治療光環，持續治療周圍友軍"],
+ ["Dino","恐龍",80,24,"Pierce","Natural","坦克","非常坦"],
+ ["Imp","小惡魔",100,25,"Magic","Natural","近戰","僱用時多生一隻，高傷害"],
+ ["Cannoneer","砲手",100,30,"Impact","Swift","遠程","長程大砲，單發傷害高"],
+ ["Safety Mole","安全鼴鼠",120,30,"Impact","Natural","近戰","光環：周圍友軍受到傷害 −15%，但造成傷害 −12.5%（v12.07 改版）"],
+ ["Drake","幼龍",120,36,"Magic","Swift","遠程","火焰吐息，高傷害"],
+ ["Pack Leader","狼群首領",160,40,"Impact","Fortified","近戰","光環：周圍友軍傷害 +15%，但受到傷害 +18.5%（v12.05 改版）；適合速破、打召喚和回血陣容"],
+ ["Mimic","寶箱怪",160,40,"Pierce","Arcane","近戰","擊殺得金；兩隻可合體成 Giga Mimic，血量與傷害加倍（v26.3）"],
+ ["Honey Bear","蜂蜜熊",180,45,"Impact","Natural","坦克","強力傭兵。陣亡時治療周圍受傷友軍約 930，每多治一隻 +5%"],
+ ["Witch","女巫",200,50,"Magic","Arcane","遠程","不斷召喚青蛙"],
+ ["Ogre","食人魔",200,50,"Impact","Fortified","近戰","Rage：每 10 次攻擊暴怒 5 秒，攻速 +50%、吸血 20%、每擊附加 1% 最大生命傷害（v12.08 改版）"],
+ ["Ghost Knight","幽靈騎士",240,60,"Impact","Swift","坦克","受到所有傷害 −50%（v12.11 改版，血量同時 −40%）"],
+ ["Four Eyes","四眼",240,60,"Magic","Natural","遠程","連打同一目標傷害遞增，專剋 Boss 型大單位"],
+ ["Centaur","半人馬",280,70,"Pierce","Natural","近戰","高傷害，劈砍最多 5 個敵人"],
+ ["Shaman","薩滿",320,80,"Magic","Swift","遠程","光環：周圍友軍（含該波怪物）攻速 +10%、傷害 +25"],
+ ["Siege Ram","攻城槌",320,80,"Pierce","Fortified","坦克","受到遠程單位傷害降低"],
+ ["Needler","針刺者",360,90,"Pierce","Fortified","遠程","每次多射 2 針；攻擊回魔，Rapid Fire 攻速 +50% 持續 15 秒"],
+ ["Kraken","海妖",400,100,"Impact","Arcane","坦克","很坦；陣亡時引爆，暈眩周圍敵人 1 秒、國王 0.2 秒（v12.09）"]
+].map(r=>({en:r[0],zh:r[1],cost:r[2],inc:r[3],atk:r[4],def:r[5],role:r[6],abil:r[7],rate:r[3]/r[2]}));
+// Same-name auras do not stack with themselves (official since patch 6.03): a second copy adds no aura value.
+const AURA=new Set(["Hermit","Safety Mole","Pack Leader","Shaman"]);
+MERCS.forEach(m=>{if(AURA.has(m.en)){m.aura=true;m.abil+="。同名光環不疊加，派第二隻只多一隻本體"}});
+// Income mercs return 30% of cost as income; power mercs 25% but fight harder.
+MERCS.forEach(m=>{m.kind=m.rate>=0.299?"income":"power"});
+
+const WAVES=[
+ [1,"Crab","螃蟹","12","Pierce","Fortified","近戰","",72,"每隻 6 金。戰鬥超過 45 秒會自動 2 倍速（v26.8）"],
+ [2,"Wale","海象人","12","Impact","Arcane","近戰","",84,"每隻 7 金"],
+ [3,"Hopper","跳跳怪","18","Magic","Natural","近戰","",90,"每隻 5 金，成群出現"],
+ [4,"Flying Chicken","飛雞","12","Impact","Swift","飛行","fly",96,"每隻 8 金"],
+ [5,"Scorpion","蠍子","8 + 小王","Pierce","Natural","近戰","boss",108,"小兵 9 金、Scorpion King 36 金；小王生成在最前"],
+ [6,"Rocko","岩石怪","6","Impact","Fortified","近戰","",114,"每隻 19 金。Impale：每次攻擊疊傷害；對國王最多疊 2 層（v12.08）"],
+ [7,"Sludge","污泥怪","10（+10 Blob）","Magic","Arcane","近戰","",120,"Sludge 10 金、死後分裂的 Blob 2 金；抗魔法"],
+ [8,"Kobra","眼鏡蛇","12","Magic","Swift","中距離","rng",132,"每隻 11 金，噴魔法毒液"],
+ [9,"Carapace","甲殼蟲","12","Pierce","Fortified","近戰","",144,"每隻 12 金。受到遠程傷害 −15%"],
+ [10,"Granddaddy","老爹（Boss）","1","Impact","Arcane","Boss","boss",150,"打傷害給 125 金、擊殺給 25 金"],
+ [11,"Quill Shooter","刺射獸","12","Pierce","Natural","遠程","rng",null,"射程 400（v12.02 縮短）；本波建造階段可選 Legion Spell"],
+ [12,"Mantis","螳螂","12","Pierce","Swift","近戰","",null,"利爪高傷害"],
+ [13,"Drill Golem","鑽頭魔像","6","Impact","Fortified","近戰","",null,"數量少但又坦又痛"],
+ [14,"Killer Slug","殺手蛞蝓","12","Magic","Arcane","近戰","",null,"殼抗魔法"],
+ [15,"Quadrapus","四足章魚","8 + Boss","Magic","Natural","短距離","boss",null,"Feast：附近有敵人死亡時血量與攻速 +0.5%（v26.5）"],
+ [16,"Cardinal","紅雀","18","Impact","Swift","近戰","",null,"高傷害、大量成群；也有 Feast（v26.5）"],
+ [17,"Metal Dragon","金屬龍","12","Pierce","Arcane","飛行","fly",null,"龍血抗魔法"],
+ [18,"Wale Chief","海象酋長","6","Impact","Natural","近戰","",null,"每擊附帶單體額外傷害，剋大量便宜單位；18–21 波有 Feast"],
+ [19,"Dire Toad","惡毒蟾蜍","12","Pierce","Swift","中距離","rng",null,"毒液穿甲"],
+ [20,"Maccabeus","馬加比（Boss）","1","Magic","Fortified","Boss","boss",null,"Feast：擊殺時最大生命 +0.5%；2026 年起血量 −15%"],
+ [21,"Legion Lord","軍團領主","10 + 小王","Pure","Immaterial","近戰","boss",null,"Legion King 小王生成在最前；純粹攻擊、無形護甲，不吃相剋"]
+].map(r=>({n:r[0],en:r[1],zh:r[2],count:r[3],atk:r[4],def:r[5],kind:r[6],tag:r[7],gold:r[8],note:r[9]}));
+
+const EXAMPLE=[["Zeus",1],["Bazooka",1],["Head Chef",2],["Canopie",1],["Wileshroom",1],["Pulsebot",2],["Sakura",1],["Fire Lord",1],["Holy Avenger",1],["Sovereign",1],["Harpy",3],["Sky Queen",1]];
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const chip=(t,isDef)=>t?`<span class="chip${isDef?" def":""} c-${t}">${ZH[t]}</span>`:"";
+const mcls=v=>v>1.001?"m-up":v<0.999?"m-down":"m-flat";
+const pct=v=>{const d=Math.round((v-1)*100);return d>0?`+${d}%`:d<0?`${d}%`:"±0"};
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+/* tabs */
+const tabs=[...document.querySelectorAll("nav.tabs button")];
+function showTab(k){
+  tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===k?"true":"false"));
+  document.querySelectorAll("section[data-sec]").forEach(s=>{s.hidden=s.dataset.sec!==k});
+  store.set("ltd2-tab",k);
+}
+tabs.forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+
+/* matrix */
+function renderMatrix(){
+  let h="<thead><tr><th>攻擊 ＼ 護甲</th>"+DEF.map(d=>`<th>${chip(d,true)}</th>`).join("")+"</tr></thead><tbody>";
+  ATK.forEach(a=>{h+=`<tr><td>${chip(a)}</td>`+DEF.map(d=>{const v=M[a][d];return `<td class="mult ${mcls(v)}">${v.toFixed(2)}<div class="small" style="font-weight:400">${pct(v)}</div></td>`}).join("")+"</tr>"});
+  $("#matrix").innerHTML=h+"</tbody>";
+}
+
+/* filters */
+ATK.forEach(a=>["#mfa","#ffa"].forEach(s=>$(s).insertAdjacentHTML("beforeend",`<option value="${a}">${ZH[a]} ${a}</option>`)));
+DEF.forEach(d=>["#mfd","#ffd"].forEach(s=>$(s).insertAdjacentHTML("beforeend",`<option value="${d}">${ZH[d]} ${d}</option>`)));
+[...new Set(FIGHTERS.map(f=>f.leg))].forEach(l=>$("#fleg").insertAdjacentHTML("beforeend",`<option value="${l}">${LEGZH[l]||l}</option>`));
+
+/* fighters table */
+let fsort={k:"leg",dir:1};
+function iconUrl(n){return "https://cdn.legiontd2.com/icons/"+n.replace(/[^A-Za-z]/g,"")+".png"}
+function renderFighters(){
+  const q=$("#fq").value.trim().toLowerCase(),lg=$("#fleg").value,fa=$("#ffa").value,fd=$("#ffd").value;
+  const order=Object.keys(LEGZH);
+  let rows=FIGHTERS.filter(f=>(!q||(f.n+" "+f.ab+" "+f.role).toLowerCase().includes(q))&&(!lg||f.leg===lg)&&(!fa||f.atk===fa)&&(!fd||f.def===fd));
+  rows.sort((x,y)=>{let a=x[fsort.k],b=y[fsort.k];if(fsort.k==="leg"){a=order.indexOf(a);b=order.indexOf(b)}return ((typeof a==="number")?a-b:String(a).localeCompare(String(b)))*fsort.dir||x.val-y.val});
+  const col=(k,l,num)=>`<th class="sortable${num?" num":""}" data-k="${k}">${l}${fsort.k===k?(fsort.dir>0?" ▲":" ▼"):""}</th>`;
+  $("#fcount").textContent=FIGHTERS.length;
+  $("#ftable").innerHTML="<thead><tr>"+col("n","戰士")+col("leg","陣營")+col("cost","成本",1)+col("val","總價值",1)+col("atk","攻擊")+col("def","護甲")+col("role","定位")+"<th>能力</th></tr></thead><tbody>"+
+    rows.map(f=>`<tr><td><a href="${iconUrl(f.n)}" target="_blank" rel="noopener"><b>${esc(f.n)}</b></a>${f.leg==="新單位"?' <span class="pill new">新</span>':""}${f.up?`<div class="small muted">升級 → ${esc(f.up)}</div>`:""}</td><td class="small">${LEGZH[f.leg]||f.leg}${f.tier?` · T${f.tier}`:""}</td><td class="num">${f.cost}</td><td class="num">${f.val}</td><td>${chip(f.atk)}</td><td>${chip(f.def,true)}</td><td class="small">${esc(f.role)}</td><td class="small" style="min-width:240px">${esc(f.ab)}${f.note?`<div class="muted">${esc(f.note)}</div>`:""}</td></tr>`).join("")+
+    (rows.length?"":`<tr><td colspan="8" class="muted">沒有符合條件的戰士，試著放寬篩選。</td></tr>`)+"</tbody>";
+  document.querySelectorAll("#ftable th.sortable").forEach(th=>th.addEventListener("click",()=>{const k=th.dataset.k;fsort=fsort.k===k?{k,dir:-fsort.dir}:{k,dir:1};renderFighters()}));
+}
+["#fq","#fleg","#ffa","#ffd"].forEach(s=>$(s).addEventListener("input",renderFighters));
+
+/* mercs table */
+let msort={k:"cost",dir:1};
+function renderMercs(){
+  const q=$("#mq").value.trim().toLowerCase(),fa=$("#mfa").value,fd=$("#mfd").value,fr=$("#mfr").value;
+  let rows=MERCS.filter(m=>(!q||(m.en+m.zh+m.abil).toLowerCase().includes(q))&&(!fa||m.atk===fa)&&(!fd||m.def===fd)&&(!fr||m.role===fr));
+  rows.sort((x,y)=>{const a=x[msort.k],b=y[msort.k];return (typeof a==="number"?a-b:String(a).localeCompare(String(b)))*msort.dir||x.cost-y.cost});
+  const col=(k,l,num)=>`<th class="sortable${num?" num":""}" data-k="${k}">${l}${msort.k===k?(msort.dir>0?" ▲":" ▼"):""}</th>`;
+  $("#merctable").innerHTML="<thead><tr>"+col("en","傭兵")+col("cost","秘晶",1)+col("inc","收入",1)+col("rate","收入率",1)+col("atk","攻擊")+col("def","護甲")+col("role","站位")+"<th>能力</th></tr></thead><tbody>"+
+   rows.map(m=>`<tr><td><b>${m.zh}</b> <span class="pill${m.kind==="power"?" boss":""}">${m.kind==="power"?"強力":"收入"}</span><div class="small muted">${m.en}</div></td><td class="num">${m.cost}</td><td class="num">+${m.inc}</td><td class="num">${Math.round(m.rate*100)}%</td><td>${chip(m.atk)}</td><td>${chip(m.def,true)}</td><td><span class="pill">${m.role}</span></td><td class="small" style="min-width:220px">${m.abil}</td></tr>`).join("")+
+   (rows.length?"":`<tr><td colspan="8" class="muted">沒有符合條件的傭兵，試著放寬篩選。</td></tr>`)+"</tbody>";
+  document.querySelectorAll("#merctable th.sortable").forEach(th=>th.addEventListener("click",()=>{const k=th.dataset.k;msort=msort.k===k?{k,dir:-msort.dir}:{k,dir:1};renderMercs()}));
+}
+["#mq","#mfa","#mfd","#mfr"].forEach(s=>$(s).addEventListener("input",renderMercs));
+
+/* waves table */
+const kindPill=w=>`<span class="pill ${w.tag}">${w.kind}</span>`;
+function renderWaves(){
+  $("#wavetable").innerHTML="<thead><tr><th class='num'>波</th><th>怪物</th><th class='num'>數量</th><th>攻擊</th><th>護甲</th><th>類型</th><th class='num'>總賞金</th><th>備註</th></tr></thead><tbody>"+
+   WAVES.map(w=>`<tr><td class="num"><b>${w.n}</b></td><td><b>${w.zh}</b><div class="small muted">${w.en}</div></td><td class="num">${w.count}</td><td>${chip(w.atk)}</td><td>${chip(w.def,true)}</td><td>${kindPill(w)}</td><td class="num">${w.gold??"<span class='muted'>—</span>"}</td><td class="small" style="min-width:200px">${w.note}</td></tr>`).join("")+"</tbody>";
+}
+
+/* ---------- send calculator ---------- */
+let cur=17, lineup=[];
+const cleanUnits=l=>Array.isArray(l)?l.filter(x=>Array.isArray(x)&&FBY[String(x[0]).toLowerCase()]&&x[1]>0).map(x=>[FBY[String(x[0]).toLowerCase()].n,Math.min(99,Math.floor(x[1]))]):[];
+function loadDraft(){
+  const v=parseInt(store.get("ltd2-wave"),10);cur=(v>=1&&v<=21)?v:17;
+  let l=null;try{l=JSON.parse(store.get("ltd2-lineup")||"null")}catch(e){}
+  lineup=l?cleanUnits(l):EXAMPLE.map(x=>[...x]);
+  const b=parseInt(store.get("ltd2-budget"),10);$("#budget").value=b>0?b:720;
+}
+loadDraft();
+
+/* shared state */
+let DB=null, USER=null, myId=null, canWrite=true;
+let boards=[], sends=[], boardId=store.get("ltd2-board")||"";
+let writeTimer=null, writing=false, dirty=false;
+const curBoard=()=>boards.find(b=>b.id===boardId)||null;
+function commit(){
+  if(!boardId||!DB){store.set("ltd2-wave",cur);store.set("ltd2-lineup",JSON.stringify(lineup));store.set("ltd2-budget",$("#budget").value);return}
+  dirty=true;clearTimeout(writeTimer);writeTimer=setTimeout(flush,600);
+}
+async function flush(){
+  if(writing||!dirty||!boardId)return;writing=true;dirty=false;
+  try{await DB.collection("boards").doc(boardId).update({wave:cur,budget:parseInt($("#budget").value,10)||720,units:lineup,by:myId,updatedAt:Date.now()})}
+  catch(e){showErr(e)}
+  writing=false;if(dirty)flush();
+}
+function showErr(e){
+  const c=e&&e.code;
+  $("#syncstatus").textContent=c==="invalid_argument"?"你目前只有檢視權限，改動不會存到共用資料":c==="quota_exceeded"?"共用資料已滿，請刪除舊陣容或紀錄":"儲存失敗，稍後再試";
+  if(c==="invalid_argument"){canWrite=false;renderBoardsUI()}
+}
+function applyBoard(){
+  const b=curBoard();if(!b)return;
+  if(dirty||writing)return; // keep local edits until they land
+  cur=(b.wave>=1&&b.wave<=21)?b.wave:17;lineup=cleanUnits(b.units);$("#budget").value=b.budget||720;
+}
+async function renderBoardsUI(){
+  const sel=$("#boardsel");
+  sel.innerHTML=`<option value="">本機草稿（未共用）</option>`+boards.map(b=>`<option value="${esc(b.id)}">${esc(b.name||"未命名")}</option>`).join("");
+  sel.value=curBoard()?boardId:"";
+  const shared=!!DB;
+  $("#newname").hidden=$("#newboard").hidden=!(shared&&canWrite);
+  $("#delboard").hidden=!(shared&&canWrite&&curBoard());
+  const b=curBoard();
+  if(!shared){$("#syncstatus").textContent="本機草稿（共用資料未連線）";return}
+  if(!b){$("#syncstatus").textContent=boards.length?"本機草稿，選擇上方的共用陣容即可同步":"本機草稿，存成共用陣容後隊友就看得到";return}
+  let who="";if(b.by&&USER){const ps=await USER.profiles([b.by]);who=ps[b.by].name||"隊友"}
+  const t=b.updatedAt?new Date(b.updatedAt).toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"}):"";
+  $("#syncstatus").textContent=`共用中${who?` · ${who}`:""}${t?` 於 ${t} 更新`:""}${canWrite?"":" · 唯讀"}`;
+}
+$("#boardsel").addEventListener("change",e=>{boardId=e.target.value;store.set("ltd2-board",boardId);$("#delconfirm").hidden=true;
+  if(boardId)applyBoard();else loadDraft();renderBoardsUI();renderPlan()});
+$("#newboard").addEventListener("click",async()=>{
+  const name=$("#newname").value.trim();
+  if(!name){$("#newname").setCustomValidity("請輸入陣容名稱");$("#newname").reportValidity();return}
+  $("#newname").setCustomValidity("");
+  const ref=DB.collection("boards").doc();
+  try{await ref.set({name:name.slice(0,40),wave:cur,budget:parseInt($("#budget").value,10)||720,units:lineup,by:myId,updatedAt:Date.now()});
+    boardId=ref.id;store.set("ltd2-board",boardId);$("#newname").value="";$("#syncstatus").textContent="已存成共用陣容";}
+  catch(e){showErr(e)}
+});
+$("#newname").addEventListener("input",()=>$("#newname").setCustomValidity(""));
+$("#delboard").addEventListener("click",()=>{$("#delconfirm").hidden=false});
+$("#delno").addEventListener("click",()=>{$("#delconfirm").hidden=true});
+$("#delyes").addEventListener("click",async()=>{
+  $("#delconfirm").hidden=true;const id=boardId;boardId="";store.set("ltd2-board","");loadDraft();
+  try{await DB.collection("boards").doc(id).delete()}catch(e){showErr(e)}
+  renderBoardsUI();renderPlan();
+});
+
+/* send log */
+async function recordSend(which){
+  if(!DB){return}
+  const combo=which==="A"?lastCombos.A:lastCombos.B;if(!combo||!combo.length)return;
+  const b=curBoard();
+  try{await DB.collection("sends").doc().set({board:b?b.name:"本機草稿",wave:cur,mercs:combo.map(x=>[x.s.m.en,x.c]),spent:combo.reduce((s,x)=>s+x.s.m.cost*x.c,0),result:"pending",note:"",by:myId,at:Date.now()})}
+  catch(e){showErr(e)}
+}
+const RES={pending:"待結果",broke:"有破防",held:"被守住"};
+async function renderSends(){
+  const box=$("#sends");
+  const ae=document.activeElement;if(ae&&box.contains(ae)&&ae.tagName==="INPUT"){ae.addEventListener("blur",()=>renderSends(),{once:true});return}
+  if(!DB){box.innerHTML=`<p class="small muted" style="margin:0">共用資料未連線，派兵紀錄需要登入 claude.ai 開啟這個頁面才能使用。</p>`;return}
+  if(!sends.length){box.innerHTML=`<p class="small muted" style="margin:0">還沒有紀錄。在上方派兵建議按「記錄這組」就會出現在這裡，隊友會同步看到，打完再回來標記有沒有破防。</p>`;return}
+  const ids=[...new Set(sends.map(s=>s.by).filter(Boolean))];const ps=USER&&ids.length?await USER.profiles(ids):{};
+  const zhOf=en=>(MERCS.find(m=>m.en===en)||{zh:en}).zh;
+  box.innerHTML=`<div class="scroll"><table><thead><tr><th>時間</th><th>誰</th><th>對手</th><th class="num">波</th><th>派兵</th><th class="num">秘晶</th><th>結果</th><th>備註</th><th></th></tr></thead><tbody>${sends.map(s=>{
+    const t=new Date(s.at||0);const when=t.toLocaleDateString("zh-TW",{month:"numeric",day:"numeric"})+" "+t.toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"});
+    return `<tr data-id="${esc(s.id)}"><td class="small" style="white-space:nowrap">${when}</td><td class="small" data-who="${esc(s.by||"")}"></td><td class="small">${esc(s.board||"")}</td><td class="num">${s.wave||""}</td>
+    <td class="small">${(s.mercs||[]).map(([en,c])=>`${esc(zhOf(en))}${c>1?"×"+c:""}`).join("、")}</td><td class="num">${s.spent||0}</td>
+    <td><select data-f="result" aria-label="結果"${canWrite?"":" disabled"}>${Object.entries(RES).map(([k,v])=>`<option value="${k}"${s.result===k?" selected":""}>${v}</option>`).join("")}</select></td>
+    <td><input type="text" data-f="note" value="${esc(s.note||"")}" placeholder="備註" aria-label="備註" style="min-width:120px"${canWrite?"":" disabled"}></td>
+    <td>${canWrite?`<button class="btn" data-f="del" type="button" aria-label="刪除紀錄">×</button>`:""}</td></tr>`}).join("")}</tbody></table></div>`;
+  box.querySelectorAll("td[data-who]").forEach(td=>{const id=td.dataset.who;td.textContent=id?((ps[id]&&ps[id].name)||"隊友"):"—"});
+}
+$("#sends").addEventListener("change",async e=>{
+  const el=e.target.closest("[data-f]");const tr=e.target.closest("tr[data-id]");if(!el||!tr)return;
+  const ref=DB.collection("sends").doc(tr.dataset.id);
+  try{if(el.dataset.f==="result")await ref.update({result:el.value});else if(el.dataset.f==="note")await ref.update({note:el.value.slice(0,200)})}catch(err){showErr(err)}
+});
+$("#sends").addEventListener("click",async e=>{
+  const el=e.target.closest("button[data-f='del']");const tr=e.target.closest("tr[data-id]");if(!el||!tr)return;
+  if(el.dataset.armed!=="1"){el.dataset.armed="1";el.textContent="確定刪除";return}
+  try{await DB.collection("sends").doc(tr.dataset.id).delete()}catch(err){showErr(err)}
+});
+$("#plan").addEventListener("click",e=>{const b=e.target.closest("button[data-rec]");if(b){recordSend(b.dataset.rec);b.textContent="已記錄";b.disabled=true}});
+
+(async()=>{
+  const c=window.claude;if(!c||!c.use)return;
+  const [db,user]=await Promise.all([c.use("db"),c.use("user")]);
+  USER=user;
+  if(!db){renderBoardsUI();renderSends();return}
+  DB=db;myId=user?await user.id():null;
+  const cw=user?await user.can("data.write"):null;if(cw===false)canWrite=false;
+  DB.collection("boards").orderBy("updatedAt","desc").limit(100).onSnapshot(snap=>{
+    boards=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(boardId&&!curBoard()&&!snap.metadata.fromCache){boardId="";store.set("ltd2-board","");loadDraft()}
+    applyBoard();renderBoardsUI();renderPlan();
+  },err=>{$("#syncstatus").textContent="共用資料連線中斷，重新整理頁面即可恢復"});
+  DB.collection("sends").orderBy("at","desc").limit(100).onSnapshot(snap=>{
+    sends=snap.docs.map(d=>({id:d.id,...d.data()}));renderSends();
+  },err=>{});
+  renderBoardsUI();renderSends();renderPlan();
+})();
+
+$("#fighterlist").innerHTML=FIGHTERS.map(f=>`<option value="${esc(f.n)}">${LEGZH[f.leg]||f.leg} · ${ZH[f.atk]}／${ZH[f.def]}</option>`).join("");
+$("#wavepick").innerHTML=WAVES.map(w=>`<button type="button" class="${w.tag==="boss"?"boss":""}" data-n="${w.n}" aria-pressed="false" title="${w.zh}">${w.n}</button>`).join("");
+$("#wavepick").addEventListener("click",e=>{const b=e.target.closest("button");if(b){cur=+b.dataset.n;commit();renderPlan()}});
+function saveLineup(){commit()}
+function addUnit(){
+  const v=$("#addq").value.trim();const f=FBY[v.toLowerCase()];
+  if(!f){$("#addq").setCustomValidity("找不到這個戰士，請從下拉清單選擇");$("#addq").reportValidity();return}
+  $("#addq").setCustomValidity("");
+  const e=lineup.find(x=>x[0].toLowerCase()===f.n.toLowerCase());if(e)e[1]++;else lineup.push([f.n,1]);
+  $("#addq").value="";saveLineup();renderPlan();
+}
+$("#addbtn").addEventListener("click",addUnit);
+$("#addq").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addUnit()}});
+$("#addq").addEventListener("input",()=>$("#addq").setCustomValidity(""));
+$("#examplebtn").addEventListener("click",()=>{lineup=EXAMPLE.map(x=>[...x]);saveLineup();renderPlan()});
+$("#clearbtn").addEventListener("click",()=>{lineup=[];saveLineup();renderPlan()});
+$("#lineup").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;const i=+b.dataset.i;
+  if(b.dataset.a==="inc")lineup[i][1]++;else if(b.dataset.a==="dec"){lineup[i][1]--;if(lineup[i][1]<=0)lineup.splice(i,1)}else lineup.splice(i,1);
+  saveLineup();renderPlan()});
+$("#budget").addEventListener("input",()=>{commit();renderPlan()});
+{const md=store.get("ltd2-mode");if(md)$("#mode").value=md}
+$("#mode").addEventListener("change",()=>{store.set("ltd2-mode",$("#mode").value);renderPlan()});
+
+function profile(){
+  const A={},D={};let tot=0;
+  lineup.forEach(([n,c])=>{const f=FBY[n.toLowerCase()];const w=f.val*c;tot+=w;A[f.atk]=(A[f.atk]||0)+w;D[f.def]=(D[f.def]||0)+w});
+  if(!tot)return null;
+  ATK.forEach(a=>A[a]=(A[a]||0)/tot);DEF.forEach(d=>D[d]=(D[d]||0)/tot);
+  return {A,D,tot};
+}
+function waveAssumed(w){
+  // fallback when no lineup: opponent built to counter this wave
+  const A={},D={};ATK.forEach(a=>A[a]=0);DEF.forEach(d=>D[d]=0);
+  const bestA=Math.max(...ATK.map(a=>M[a][w.def]));const as=ATK.filter(a=>M[a][w.def]===bestA);as.forEach(a=>A[a]=1/as.length);
+  const bestD=Math.min(...DEF.filter(d=>d!=="Immaterial").map(d=>M[w.atk][d]));const ds=DEF.filter(d=>d!=="Immaterial"&&M[w.atk][d]===bestD);ds.forEach(d=>D[d]=1/ds.length);
+  return {A,D,tot:0};
+}
+function stackBar(dist,keys){
+  return `<div class="stack">${keys.filter(k=>dist[k]>0.001).map(k=>`<span class="b-${k}" style="width:${dist[k]*100}%" title="${ZH[k]} ${Math.round(dist[k]*100)}%"></span>`).join("")}</div>
+  <div class="legend">${keys.filter(k=>dist[k]>0.001).sort((a,b)=>dist[b]-dist[a]).map(k=>`<span>${chip(k,DEF.includes(k))} ${Math.round(dist[k]*100)}%</span>`).join("")}</div>`;
+}
+function scoreMercs(P){
+  return MERCS.map(m=>{
+    const taken=ATK.reduce((s,a)=>s+P.A[a]*M[a][m.def],0);
+    const dealt=DEF.reduce((s,d)=>s+P.D[d]*M[m.atk][d],0);
+    return {m,taken,dealt,score:dealt/taken};
+  }).sort((x,y)=>y.score-x.score||x.m.cost-y.m.cost);
+}
+function bestCombo(scored,budget,maxEach){
+  const U=Math.floor(budget/20);const items=[];
+  scored.forEach(s=>{const lim=s.m.aura?1:maxEach;for(let k=0;k<lim;k++)items.push(s)});
+  const n=items.length;const dp=Array.from({length:n+1},()=>new Float64Array(U+1).fill(-1));dp[0][0]=0;
+  for(let i=1;i<=n;i++){const c=items[i-1].m.cost/20,v=items[i-1].m.cost*items[i-1].score;for(let b=0;b<=U;b++){dp[i][b]=dp[i-1][b];if(b>=c&&dp[i-1][b-c]>=0&&dp[i-1][b-c]+v>dp[i][b])dp[i][b]=dp[i-1][b-c]+v}}
+  let bb=0;for(let b=0;b<=U;b++)if(dp[n][b]>dp[n][bb]+1e-9||(Math.abs(dp[n][b]-dp[n][bb])<1e-9&&b>bb))bb=b;
+  const pick=[];let b=bb;for(let i=n;i>0;i--){if(dp[i][b]!==dp[i-1][b]){pick.push(items[i-1]);b-=items[i-1].m.cost/20}}
+  const g={};pick.forEach(s=>{g[s.m.en]=g[s.m.en]||{s,c:0};g[s.m.en].c++});
+  return Object.values(g).sort((x,y)=>y.s.m.cost-x.s.m.cost);
+}
+let lastCombos={A:null,B:null};
+function comboCard(title,sub,combo,key){
+  const spent=combo.reduce((s,x)=>s+x.s.m.cost*x.c,0),inc=combo.reduce((s,x)=>s+x.s.m.inc*x.c,0);
+  const rec=DB&&canWrite&&combo.length?`<button class="btn" type="button" data-rec="${key}" style="align-self:flex-start">記錄這組</button>`:"";
+  return `<div class="card"><h3>${title}</h3>${rec}<p class="small muted" style="margin:0">${sub}</p><div class="combo">${combo.map(x=>`<div class="row"><span><b>${x.s.m.zh}</b>${x.c>1?` ×${x.c}`:""} <span class="small muted">${x.s.m.en}</span></span><span>${chip(x.s.m.atk)} ${chip(x.s.m.def,true)}</span></div>`).join("")}
+  <div class="tot"><span>花費 ${spent}</span><span>收入 +${inc}</span></div></div></div>`;
+}
+function renderPlan(){
+  const w=WAVES[cur-1];
+  document.querySelectorAll("#wavepick button").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.n===cur?"true":"false"));
+  $("#waveinfo").innerHTML=`<div class="wavehead"><span class="big">W${w.n} ${w.zh}</span><span class="muted">${w.en}</span>${kindPill(w)}<span class="small">${chip(w.atk)} 攻擊 · ${chip(w.def,true)} 護甲 · ${w.count} 隻</span></div><p class="small muted" style="margin:0">${w.note}</p>`;
+  // lineup chips
+  $("#lineup").innerHTML=lineup.length?lineup.map(([n,c],i)=>{const f=FBY[n.toLowerCase()];return `<span class="unit"><span>${esc(f.n)}</span><span class="small">${chip(f.atk)}${chip(f.def,true)}</span><button type="button" data-i="${i}" data-a="dec" aria-label="減少 ${esc(f.n)}">−</button><span class="cnt">${c}</span><button type="button" data-i="${i}" data-a="inc" aria-label="增加 ${esc(f.n)}">＋</button><button type="button" data-i="${i}" data-a="del" aria-label="移除 ${esc(f.n)}">×</button></span>`}).join(""):
+    `<p class="small muted" style="margin:0">還沒輸入對手陣容。可以逐一加入他的單位，或按「載入範例」看示範；沒輸入時會假設對手照這一波的屬性佈陣。</p>`;
+  let P=profile();const real=!!P;if(!P)P=waveAssumed(w);
+  $("#profile").innerHTML=`<div class="grid2"><div class="card"><h3>${real?"對手攻擊類型（依兵力價值）":"推估對手攻擊類型"}</h3>${stackBar(P.A,ATK)}</div><div class="card"><h3>${real?"對手護甲類型（依兵力價值）":"推估對手護甲類型"}</h3>${stackBar(P.D,DEF)}</div></div>${real?`<p class="small muted" style="margin:0">兵力價值合計 ${P.tot}</p>`:""}`;
+  const mode=$("#mode").value;
+  const scored=scoreMercs(P).filter(s=>mode==="any"||s.m.kind===mode);
+  const budget=Math.max(20,Math.min(2000,parseInt($("#budget").value,10)||720));
+  const A=bestCombo(scored,budget,2),B=bestCombo(scored,budget,1);
+  const top=scored.slice(0,8);lastCombos={A,B};
+  $("#plan").innerHTML=`<div class="grid2">${comboCard("推薦組合","同一種傭兵最多 2 隻（光環型只派 1 隻），挑相剋最划算的",A,"A")}${comboCard("分散組合","每種最多 1 隻，類型比較多元",B,"B")}</div>
+   <div class="scroll"><table><thead><tr><th>傭兵排名</th><th class="num">秘晶</th><th>攻擊</th><th>護甲</th><th class="num">對手打它</th><th class="num">它打對手</th><th>能力</th></tr></thead><tbody>
+   ${top.map(s=>`<tr><td><b>${s.m.zh}</b> <span class="small muted">${s.m.en}</span></td><td class="num">${s.m.cost}</td><td>${chip(s.m.atk)}</td><td>${chip(s.m.def,true)}</td><td class="mult ${mcls(2-s.taken)}">${pct(s.taken)}</td><td class="mult ${mcls(s.dealt)}">${pct(s.dealt)}</td><td class="small" style="min-width:200px">${s.m.abil}</td></tr>`).join("")}
+   </tbody></table></div>
+   <p class="note">只計算屬性相剋（依對手各單位的兵力價值加權），沒有模擬能力、站位與血量。光環型傭兵（薩滿、狼群首領、鼴鼠、隱士）也會作用在該波怪物身上，怪物數量越多越划算；同名光環不疊加，所以組合裡每種只放 1 隻。強力傭兵收入只有成本的 25%（收入型是 30%），只在判斷這波打得穿時才值得派；打不穿就派收入型漲經濟。</p>`;
+  // own defense cards
+  const atkRank=ATK.map(a=>[a,M[a][w.def]]).sort((x,y)=>y[1]-x[1]);
+  const defRank=DEF.filter(d=>d!=="Immaterial").map(d=>[d,M[w.atk][d]]).sort((x,y)=>x[1]-y[1]);
+  const li=(t,v,isDef)=>`<li>${chip(t,isDef)}<span class="mult ${isDef?mcls(2-v):mcls(v)}" style="padding:0 6px">${isDef?"受到 ":""}${pct(v)}</span></li>`;
+  $("#defcards").innerHTML=`<div class="card"><h3>自己守這波：攻擊類型（打 ${ZH[w.def]}）</h3><ul class="rank">${atkRank.map(([a,v])=>li(a,v)).join("")}</ul></div>
+   <div class="card"><h3>自己守這波：護甲類型（扛 ${ZH[w.atk]}）</h3><ul class="rank">${defRank.map(([d,v])=>li(d,v,true)).join("")}</ul></div>`;
+}
+
+renderMatrix();renderFighters();renderMercs();renderWaves();renderPlan();
+{const t=store.get("ltd2-tab");if(t&&document.querySelector(`[data-sec="${t}"]`))showTab(t)}
+</script>
