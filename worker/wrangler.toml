@@ -1,0 +1,7 @@
+name = "ltd2-proxy"
+main = "src/index.js"
+compatibility_date = "2026-10-09"
+
+[vars]
+# 逗號分隔。"null" 是直接用瀏覽器打開本機 index.html（file://）時的 Origin
+ALLOWED_ORIGINS = "https://chocola0414.github.io,null"
