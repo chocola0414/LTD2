@@ -1,0 +1,45 @@
+{
+  "fighters": {
+    "Berserker": [
+      {"targetType":"wave","target":"Drill Golem","tone":"situational","reason":"屬性相剋只是普通；但 Brawler 會對同一目標逐次追加魔法傷害，打少量、高生命值的單體怪時會越打越有效。"},
+      {"targetType":"mercenary","target":"Ogre","tone":"good","reason":"食人魔是高生命值單體目標，能讓連續攻擊的額外魔法傷害累積；若很快換目標，這個優勢會下降。"},
+      {"targetType":"mercenary","target":"Snail","tone":"bad","reason":"蝸牛便宜而且不是高生命值核心目標，花時間疊 Brawler 的價值低。"}
+    ],
+    "Zeus": [
+      {"targetType":"wave","target":"Drill Golem","tone":"good","reason":"Power Surge 是單體額外魔法傷害，適合處理少量、高生命值的魔像。"}
+    ],
+    "Daphne": [
+      {"targetType":"wave","target":"Granddaddy","tone":"good","reason":"Precision 對 Boss 有額外純粹傷害，且 Mark Target 會讓後續攻擊逐步放大。"},
+      {"targetType":"wave","target":"Maccabeus","tone":"good","reason":"Precision 對 Boss 有額外純粹傷害，適合需要集中火力的單體 Boss。"}
+    ],
+    "Fire Elemental": [
+      {"targetType":"wave","target":"Hopper","tone":"good","reason":"攻擊會彈射並附帶範圍魔法傷害，敵人數量多時比單體輸出更有價值。"},
+      {"targetType":"wave","target":"Cardinal","tone":"good","reason":"Cardinal 數量多，彈射和範圍傷害能提高每次攻擊的實際覆蓋。"}
+    ],
+    "Head Chef": [
+      {"targetType":"wave","target":"Drill Golem","tone":"good","reason":"長時間戰鬥能把吸血光環和治療價值轉成更高的有效生命；但它本身不是快速破坦輸出。"}
+    ]
+  },
+  "mercenaries": {
+    "Pack Leader": [
+      {"targetType":"wave","target":"Drill Golem","tone":"good","reason":"光環可放大整波友軍傷害；面對少量高生命值怪物時，集中增加前排輸出比再堆一隻純坦更有壓力。"},
+      {"targetType":"wave","target":"Cardinal","tone":"good","reason":"怪物數量多，傷害光環可以作用在更多友軍身上。"}
+    ],
+    "Ogre": [
+      {"targetType":"wave","target":"Drill Golem","tone":"good","reason":"Rage 的額外傷害和最大生命百分比傷害，對少量高生命值單位比便宜收入兵更有破防價值。"},
+      {"targetType":"mercenary","target":"Iron Scales","tone":"good","reason":"最大生命百分比傷害能補足一般攻擊打高生命值坦克的不足。"}
+    ],
+    "Hermit": [
+      {"targetType":"wave","target":"Drill Golem","tone":"good","reason":"戰鬥越久，治療光環越能把前排和其他傭兵的有效生命轉成實際輸出時間。"}
+    ],
+    "Brute": [
+      {"targetType":"wave","target":"Drill Golem","tone":"situational","reason":"降低攻速能減少前排承受的持續傷害；它是延長戰鬥用的輔助，不是單獨破坦的主輸出。"}
+    ],
+    "Ghost Knight": [
+      {"targetType":"wave","target":"Drill Golem","tone":"situational","reason":"減傷讓派兵更耐打，但兩隻一起派可能只延長戰鬥，沒有提供足夠的額外破坦傷害。"}
+    ],
+    "Snail": [
+      {"targetType":"wave","target":"Drill Golem","tone":"bad","reason":"主要價值是收入；在需要立即改變戰鬥結果的波次，單獨混入蝸牛通常不會增加足夠壓力。"}
+    ]
+  }
+}

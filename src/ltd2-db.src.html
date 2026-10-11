@@ -105,7 +105,7 @@ section[hidden]{display:none!important}
 .kings{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 14px}
 .kbar{height:12px;border-radius:4px;background:var(--bad-soft);overflow:hidden;border:1px solid var(--line)}
 .kbar span{display:block;height:100%;background:var(--good)}
-.lanes{display:grid;grid-template-columns:repeat(4,minmax(250px,1fr));gap:12px}
+.replay-grid{display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:12px;align-items:start}
 .lanehead{display:flex;align-items:center;gap:8px;min-width:0}
 .lanehead b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ico{width:28px;height:28px;border-radius:4px;flex:none;background:var(--bg)}
@@ -122,6 +122,20 @@ section[hidden]{display:none!important}
 .lrow .v{font-family:var(--f-mono);color:var(--ink)}
 .leak{font-family:var(--f-mono);font-weight:600;color:var(--bad)}
 .verdict{border:1px dashed var(--line);border-radius:6px;padding:6px 8px;font-size:.8rem;color:var(--muted)}
+.analysis-card{border:1px solid var(--line);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.power-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;text-align:center}
+.power-value{font:inherit;border:0;border-radius:4px;padding:6px 2px;background:var(--bg);color:var(--ink);cursor:help;min-width:0}
+.power-value b{display:block;font-family:var(--f-mono);font-size:1.15rem}
+.power-value small{display:block;font-family:var(--f-mono);font-size:.72rem}
+.power-value span{font-size:.72rem;color:var(--muted)}
+.power-positive{color:var(--good)}.power-negative{color:var(--bad)}
+.power-tooltip{position:fixed;z-index:20;width:min(420px,calc(100vw - 24px));max-height:60vh;overflow:auto;padding:12px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);box-shadow:0 4px 18px #0003;white-space:pre-wrap;font-size:.8rem;line-height:1.5}
+.board[data-player-slot]{cursor:context-menu}
+.state{display:inline-block;font-size:.72rem;padding:1px 6px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.state-good{border-color:var(--good);color:var(--good)}.state-bad{border-color:var(--bad);color:var(--bad)}.state-situational{border-color:var(--accent);color:var(--accent)}
+.matchup-cell{min-width:210px}.matchup-cell .small{line-height:1.35}
+.note-list{display:flex;flex-direction:column;gap:3px}
+.note-list div:before{content:"· ";color:var(--accent)}
 @media (max-width:520px){th,td{padding:6px 7px}.brand h1{font-size:1.4rem}}
 </style>
 
@@ -151,6 +165,7 @@ section[hidden]{display:none!important}
       <h2>2. 對手陣容</h2>
       <span class="small muted" id="syncstatus">本機草稿</span>
     </div>
+    <p id="replay-import-note" class="note" role="status" hidden></p>
     <div class="controls">
       <select id="boardsel" aria-label="選擇共用陣容"><option value="">本機草稿（未共用）</option></select>
       <input type="text" id="newname" placeholder="新陣容名稱，例如對手 ID" aria-label="新陣容名稱" style="flex:1 1 160px">
@@ -173,7 +188,7 @@ section[hidden]{display:none!important}
       <h2>3. 派兵建議</h2>
       <span class="controls">
         <label class="small muted" for="mode">目的 <select id="mode"><option value="power">破防（強力傭兵）</option><option value="income">漲收入（收入型傭兵）</option><option value="any">不限</option></select></label>
-        <label class="small muted" for="budget">秘晶預算 <input type="number" id="budget" min="20" max="2000" step="20" value="720"></label>
+        <label class="small muted" for="budget">秘晶預算 <input type="number" id="budget" min="0" max="2000" step="20" value="720"></label>
       </span>
     </div>
     <div id="plan"></div>
@@ -196,6 +211,8 @@ section[hidden]{display:none!important}
       <select id="fleg" aria-label="篩選陣營"><option value="">全部陣營</option></select>
       <select id="ffa" aria-label="篩選攻擊類型"><option value="">全部攻擊</option></select>
       <select id="ffd" aria-label="篩選護甲類型"><option value="">全部護甲</option></select>
+      <label class="small muted">對照波次 <select id="fwave" aria-label="戰士對照波次"></select></label>
+      <label class="small muted">加入傭兵 <select id="fextra" aria-label="戰士加入傭兵"><option value="">無</option></select></label>
     </div>
     <div class="scroll"><table id="ftable"></table></div>
     <p class="small muted" style="margin:0">成本欄是這一階要花的金幣，總價值是從第一階升上來的累計。標「新」的單位 wiki 尚未收錄，資料取自 Steam 更新公告。點名稱可開官方頭像，方便對照截圖。</p>
@@ -210,6 +227,8 @@ section[hidden]{display:none!important}
       <select id="mfa" aria-label="篩選攻擊類型"><option value="">全部攻擊</option></select>
       <select id="mfd" aria-label="篩選護甲類型"><option value="">全部護甲</option></select>
       <select id="mfr" aria-label="篩選站位"><option value="">全部站位</option><option>坦克</option><option>近戰</option><option>遠程</option></select>
+      <label class="small muted">對照波次 <select id="mwave" aria-label="傭兵對照波次"></select></label>
+      <label class="small muted">加入傭兵 <select id="mextra" aria-label="傭兵加入傭兵"><option value="">無</option></select></label>
     </div>
     <div class="scroll"><table id="merctable"></table></div>
     <p class="small muted" style="margin:0">能力說明已對照到 v26.9 的更新公告。收入率 = 收入 ÷ 秘晶成本。坦克生成在怪群前方、近戰在怪群中、遠程在後方。</p>
@@ -251,6 +270,7 @@ section[hidden]{display:none!important}
       <li>戰士屬性、成本取自 wiki；wiki 多數頁面停在 2022–2024 年，所以另外逐篇讀了 2024-01 到 2026-09 的 Steam 更新公告，補上 13 隻新單位、Fire Elemental 改成魔法攻擊等變動。</li>
       <li>公告裡的數值改動多是百分比微調，這裡只記會影響判斷的部分：屬性、能力機制、光環數值。</li>
       <li>派兵計算只算屬性相剋，沒有模擬單位能力、站位和血量。像 Fire Lord 的護盾、Head Chef 的吸血、範圍傷害單位，仍要搭配傭兵能力一起判斷。</li>
+      <li>圖鑑與復盤的強度比較會把基本波次、實際收到／送出的傭兵分開計算；目前是屬性與兵力價值估算，能力型對策會以共用筆記補充，不冒充完整戰鬥模擬。</li>
       <li>傭兵和怪物的平衡改動頻繁，精確數值以遊戲內 <code>-info</code> 為準。</li>
       <li>對局復盤的資料即時取自官方 API（經 Cloudflare Worker 轉送，API key 不放在頁面裡）；單位與波次賞金取自官方 API 的單位清單，改版後要重抓。</li>
       <li>共用陣容和派兵紀錄存在這個頁面的共用資料裡：有「參與者」以上權限的人可以新增和修改，「檢視者」只能看。分頁、本機草稿只存在你自己的瀏覽器。</li>
@@ -270,6 +290,7 @@ section[hidden]{display:none!important}
 </section>
 
 </main>
+<div id="power-tooltip" class="power-tooltip" role="tooltip" hidden></div>
 
 <script>
 const ATK=["Pierce","Impact","Magic","Pure"];
@@ -284,6 +305,40 @@ const M={
 };
 const FIGHTERS=/*__FIGHTERS__*/[];
 const FBY=Object.fromEntries(FIGHTERS.map(f=>[f.n.toLowerCase(),f]));
+const MATCHUPS=/*__MATCHUPS__*/{};
+const COMBAT=/*__COMBAT__*/{};
+const combatUnit=(kind,name)=>(COMBAT.units||{})[`${kind}:${String(name).toLowerCase()}`]||null;
+function combatStatsLine(kind,name){
+  const u=combatUnit(kind,name);
+  if(!u)return '<div class="small muted">HP／DPS：官方表未匹配</div>';
+  return `<div class="small" title="官方公開表 ${esc(COMBAT.version)}；DPS 為表列約數，不含技能／增益；未保證符合對局 hotfix">HP ${u.hp} · DPS ≈${u.dps} · 射程 ${u.range} <a href="${esc(u.url)}" target="_blank" rel="noopener">來源</a></div>`;
+}
+
+// This is a stat-weighted matchup index, not a combat simulation. Reject partial
+// compositions rather than treating unknown minibosses or fighters as zero.
+function statStrength(fs,w,extra,base){
+  const wave=(COMBAT.waves||[]).find(x=>x.wave===w+1);
+  if(!wave||!Number.isFinite(wave.count)||wave.count<=0)return {reason:"波次含未建模的小王或缺少完整數量"};
+  const fighters=fs.map(f=>({name:f.n,unit:combatUnit("Fighter",f.n)}));
+  const enemies=[{name:WAVES[w].zh,count:wave.count,unit:COMBAT.units[wave.unitKey]},
+    ...extra.map(m=>({name:m.zh,count:1,unit:combatUnit("Mercenary",m.en)}))];
+  const all=[...fighters,...enemies];
+  if(all.some(x=>!x.unit||!Number.isFinite(x.unit.hp)||x.unit.hp<=0||!Number.isFinite(x.unit.dps)||x.unit.dps<0||!M[x.unit.atk]||!DEF.includes(x.unit.def)))return {reason:"部分單位缺少官方 HP／DPS 或屬性"};
+  const hp=fighters.reduce((s,x)=>s+x.unit.hp,0),dps=fighters.reduce((s,x)=>s+x.unit.dps,0);
+  const enemyHp=enemies.reduce((s,x)=>s+x.count*x.unit.hp,0),enemyDps=enemies.reduce((s,x)=>s+x.count*x.unit.dps,0);
+  if(dps<=0||enemyDps<=0)return {reason:"缺少可用的普攻 DPS（召喚／技能輸出尚未建模）"};
+  let effectiveDps=0,effectiveHp=0;
+  const details=fighters.map(x=>{
+    const u=x.unit,attack=enemies.reduce((s,e)=>s+e.count*e.unit.hp*M[u.atk][e.unit.def],0)/enemyHp;
+    const incoming=enemies.reduce((s,e)=>s+e.count*e.unit.dps*M[e.unit.atk][u.def],0)/enemyDps;
+    effectiveDps+=u.dps*attack;effectiveHp+=u.hp/incoming;
+    return {...x,attack,defense:1/incoming};
+  });
+  const attack=effectiveDps/dps,defense=effectiveHp/hp,overall=Math.sqrt(attack*defense);
+  return {model:"hp-dps",base,attack,defense,overall,effective:Math.round(base*overall),
+    hp,dps,enemyHp,enemyDps,effectiveHp,effectiveDps,details,enemies,
+    pressureRatio:Math.sqrt(effectiveHp*effectiveDps/(enemyHp*enemyDps))};
+}
 
 const MERCS=[
  ["Snail","蝸牛",20,6,"Impact","Fortified","坦克","無特殊能力，主要拿來漲收入。大量送可拖住慢速高傷單位"],
@@ -350,9 +405,65 @@ const mcls=v=>v>1.001?"m-up":v<0.999?"m-down":"m-flat";
 const pct=v=>{const d=Math.round((v-1)*100);return d>0?`+${d}%`:d<0?`${d}%`:"±0"};
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 
+/* ---------- shared matchup notes and attribute-adjusted strength ---------- */
+const stateLabel={good:"較好",bad:"較差",situational:"情境"};
+const waveCount=w=>Math.max(1,parseInt(String(w.count).match(/\d+/)?.[0]||"1",10));
+const byMerc=en=>MERCS.find(m=>m.en===en)||null;
+const byTarget=(kind,name)=>kind==="fighter"?FBY[String(name).toLowerCase()]:byMerc(name);
+const explicitNotes=(kind,name,targetType,target)=>(((kind==="mercenary"?MATCHUPS.mercenaries:MATCHUPS.fighters)||{})[name]||[]).filter(n=>n.targetType===targetType&&n.target===target);
+function targetsFor(w,extra){
+  const out=[{name:w.en,zh:w.zh,atk:w.atk,def:w.def,weight:waveCount(w),type:"wave"}];
+  (extra||[]).forEach(m=>{if(m)out.push({name:m.en,zh:m.zh,atk:m.atk,def:m.def,weight:Math.max(1,m.cost/20),type:"mercenary"})});
+  return out;
+}
+function rawUnit(kind,name){return kind==="fighter"?FBY[String(name).toLowerCase()]:byMerc(name)}
+function unitText(u){return u?`${u.ab||u.abil||""} ${u.note||""}`.toLowerCase():""}
+function abilityHints(u,target){
+  const s=unitText(u),h=[];
+  if(/bonus magic|magic damage|ability damage/.test(s))h.push("附加魔法／技能傷害");
+  if(/max health|single target|boss|consecutive|same target/.test(s)&&target.weight<=10)h.push("適合少量高生命值目標");
+  if(/splash|nearby|bounce|area|aoe|extra missiles/.test(s)&&target.weight>=10)h.push("敵人多時範圍價值上升");
+  if(/heal|heals|lifesteal|regenerat|damage reduction|shield|dodge|reduced damage/.test(s))h.push("有續戰／減傷價值");
+  if(/aura|adjacent|nearby ally|grants/.test(s))h.push("需要友軍或站位配合");
+  return h;
+}
+function matchupScore(unit,targets){
+  if(!unit||!targets.length)return {attack:1,defense:1,overall:1,weight:1};
+  let aw=0,dw=0,weight=0;
+  targets.forEach(t=>{const w=t.weight||1;weight+=w;aw+=w*M[unit.atk][t.def];dw+=w*(1/M[t.atk][unit.def])});
+  const attack=aw/weight,defense=dw/weight;
+  return {attack,defense,overall:Math.sqrt(attack*defense),weight};
+}
+function scoreTone(score){return score>1.06?"good":score<0.94?"bad":"situational"}
+function matchupNotes(kind,unit,targets){
+  const notes=[];
+  targets.forEach(target=>{
+    explicitNotes(kind,unit.n||unit.en,target.type,target.name).forEach(n=>notes.push(`${target.zh}：${n.reason}`));
+    const m=M[unit.atk][target.def],survive=1/M[target.atk][unit.def];
+    if(m>1.001)notes.push(`${target.zh}：${ZH[unit.atk]} 打 ${ZH[target.def]} ${Math.round(m*100)}%`);
+    else if(m<0.999)notes.push(`${target.zh}：${ZH[unit.atk]} 打 ${ZH[target.def]} 只有 ${Math.round(m*100)}%`);
+    if(survive>1.001)notes.push(`${target.zh}：自身 ${ZH[unit.def]} 承受 ${Math.round((1/survive)*100)}% 傷害`);
+    else if(survive<0.999)notes.push(`${target.zh}：自身 ${ZH[unit.def]} 承受 ${Math.round((1/survive)*100)}% 傷害`);
+    abilityHints(unit,target).forEach(h=>{if(!notes.includes(h))notes.push(h)});
+  });
+  return notes.slice(0,3);
+}
+function matchupCell(kind,unit,targets){
+  const first=targets[0],s=matchupScore(unit,targets),tone=scoreTone(s.overall);
+  const notes=matchupNotes(kind,unit,targets);
+  const extra=targets.length>1?`＋${targets.slice(1).map(t=>t.zh).join("、")}`:"";
+  return `<div class="matchup-cell">${combatStatsLine(kind==="fighter"?"Fighter":"Mercenary",unit.n||unit.en)}<span class="state state-${tone}">${stateLabel[tone]}</span> <b>${Math.round(s.overall*100)}%</b><div class="small muted">屬性指數：攻 ${Math.round(s.attack*100)}% · 守 ${Math.round(s.defense*100)}% · ${esc(first.zh)}${esc(extra)}</div><div class="note-list small">${notes.map(esc).map(n=>`<div>${n}</div>`).join("")}</div></div>`;
+}
+function populateMatchupControls(){
+  ["#fwave","#mwave"].forEach(sel=>{$(sel).innerHTML=WAVES.map(w=>`<option value="${w.n}">W${w.n} ${esc(w.zh)}</option>`).join("")});
+  ["#fextra","#mextra"].forEach(sel=>{$(sel).insertAdjacentHTML("beforeend",MERCS.map(m=>`<option value="${esc(m.en)}">${esc(m.zh)}</option>`).join(""))});
+  const saved=store.get("ltd2-matchup-wave");if(saved){["#fwave","#mwave"].forEach(sel=>$(sel).value=saved)}
+}
+
 /* tabs */
 const tabs=[...document.querySelectorAll("nav.tabs button")];
 function showTab(k){
+  hidePowerTooltip();
   tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===k?"true":"false"));
   document.querySelectorAll("section[data-sec]").forEach(s=>{s.hidden=s.dataset.sec!==k});
   store.set("ltd2-tab",k);
@@ -376,17 +487,18 @@ let fsort={k:"leg",dir:1};
 function iconUrl(n){return "https://cdn.legiontd2.com/icons/"+n.replace(/[^A-Za-z]/g,"")+".png"}
 function renderFighters(){
   const q=$("#fq").value.trim().toLowerCase(),lg=$("#fleg").value,fa=$("#ffa").value,fd=$("#ffd").value;
+  const wave=WAVES[(parseInt($("#fwave").value,10)||13)-1],extra=byMerc($("#fextra").value),targets=targetsFor(wave,extra?[extra]:[]);
   const order=Object.keys(LEGZH);
   let rows=FIGHTERS.filter(f=>(!q||(f.n+" "+f.ab+" "+f.role).toLowerCase().includes(q))&&(!lg||f.leg===lg)&&(!fa||f.atk===fa)&&(!fd||f.def===fd));
   rows.sort((x,y)=>{let a=x[fsort.k],b=y[fsort.k];if(fsort.k==="leg"){a=order.indexOf(a);b=order.indexOf(b)}return ((typeof a==="number")?a-b:String(a).localeCompare(String(b)))*fsort.dir||x.val-y.val});
   const col=(k,l,num)=>`<th class="sortable${num?" num":""}" data-k="${k}">${l}${fsort.k===k?(fsort.dir>0?" ▲":" ▼"):""}</th>`;
   $("#fcount").textContent=FIGHTERS.length;
-  $("#ftable").innerHTML="<thead><tr>"+col("n","戰士")+col("leg","陣營")+col("cost","成本",1)+col("val","總價值",1)+col("atk","攻擊")+col("def","護甲")+col("role","定位")+"<th>能力</th></tr></thead><tbody>"+
-    rows.map(f=>`<tr><td><a href="${iconUrl(f.n)}" target="_blank" rel="noopener"><b>${esc(f.n)}</b></a>${f.leg==="新單位"?' <span class="pill new">新</span>':""}${f.up?`<div class="small muted">升級 → ${esc(f.up)}</div>`:""}</td><td class="small">${LEGZH[f.leg]||f.leg}${f.tier?` · T${f.tier}`:""}</td><td class="num">${f.cost}</td><td class="num">${f.val}</td><td>${chip(f.atk)}</td><td>${chip(f.def,true)}</td><td class="small">${esc(f.role)}</td><td class="small" style="min-width:240px">${esc(f.ab)}${f.note?`<div class="muted">${esc(f.note)}</div>`:""}</td></tr>`).join("")+
-    (rows.length?"":`<tr><td colspan="8" class="muted">沒有符合條件的戰士，試著放寬篩選。</td></tr>`)+"</tbody>";
+  $("#ftable").innerHTML="<thead><tr>"+col("n","戰士")+col("leg","陣營")+col("cost","成本",1)+col("val","總價值",1)+col("atk","攻擊")+col("def","護甲")+col("role","定位")+"<th>能力</th><th>選定情境</th></tr></thead><tbody>"+
+    rows.map(f=>`<tr><td><a href="${iconUrl(f.n)}" target="_blank" rel="noopener"><b>${esc(f.n)}</b></a>${f.leg==="新單位"?' <span class="pill new">新</span>':""}${f.up?`<div class="small muted">升級 → ${esc(f.up)}</div>`:""}</td><td class="small">${LEGZH[f.leg]||f.leg}${f.tier?` · T${f.tier}`:""}</td><td class="num">${f.cost}</td><td class="num">${f.val}</td><td>${chip(f.atk)}</td><td>${chip(f.def,true)}</td><td class="small">${esc(f.role)}</td><td class="small" style="min-width:240px">${esc(f.ab)}${f.note?`<div class="muted">${esc(f.note)}</div>`:""}</td><td>${matchupCell("fighter",f,targets)}</td></tr>`).join("")+
+    (rows.length?"":`<tr><td colspan="9" class="muted">沒有符合條件的戰士，試著放寬篩選。</td></tr>`)+"</tbody>";
   document.querySelectorAll("#ftable th.sortable").forEach(th=>th.addEventListener("click",()=>{const k=th.dataset.k;fsort=fsort.k===k?{k,dir:-fsort.dir}:{k,dir:1};renderFighters()}));
 }
-["#fq","#fleg","#ffa","#ffd"].forEach(s=>$(s).addEventListener("input",renderFighters));
+["#fq","#fleg","#ffa","#ffd","#fwave","#fextra"].forEach(s=>$(s).addEventListener("input",()=>{if(s==="#fwave")store.set("ltd2-matchup-wave",$(s).value);renderFighters()}));
 
 /* mercs table */
 let msort={k:"cost",dir:1};
@@ -395,28 +507,39 @@ function renderMercs(){
   let rows=MERCS.filter(m=>(!q||(m.en+m.zh+m.abil).toLowerCase().includes(q))&&(!fa||m.atk===fa)&&(!fd||m.def===fd)&&(!fr||m.role===fr));
   rows.sort((x,y)=>{const a=x[msort.k],b=y[msort.k];return (typeof a==="number"?a-b:String(a).localeCompare(String(b)))*msort.dir||x.cost-y.cost});
   const col=(k,l,num)=>`<th class="sortable${num?" num":""}" data-k="${k}">${l}${msort.k===k?(msort.dir>0?" ▲":" ▼"):""}</th>`;
-  $("#merctable").innerHTML="<thead><tr>"+col("en","傭兵")+col("cost","秘晶",1)+col("inc","收入",1)+col("rate","收入率",1)+col("atk","攻擊")+col("def","護甲")+col("role","站位")+"<th>能力</th></tr></thead><tbody>"+
-   rows.map(m=>`<tr><td><b>${m.zh}</b> <span class="pill${m.kind==="power"?" boss":""}">${m.kind==="power"?"強力":"收入"}</span><div class="small muted">${m.en}</div></td><td class="num">${m.cost}</td><td class="num">+${m.inc}</td><td class="num">${Math.round(m.rate*100)}%</td><td>${chip(m.atk)}</td><td>${chip(m.def,true)}</td><td><span class="pill">${m.role}</span></td><td class="small" style="min-width:220px">${m.abil}</td></tr>`).join("")+
-   (rows.length?"":`<tr><td colspan="8" class="muted">沒有符合條件的傭兵，試著放寬篩選。</td></tr>`)+"</tbody>";
+  const wave=WAVES[(parseInt($("#mwave").value,10)||13)-1],extra=byMerc($("#mextra").value),targets=targetsFor(wave,extra?[extra]:[]);
+  $("#merctable").innerHTML="<thead><tr>"+col("en","傭兵")+col("cost","秘晶",1)+col("inc","收入",1)+col("rate","收入率",1)+col("atk","攻擊")+col("def","護甲")+col("role","站位")+"<th>能力</th><th>選定情境</th></tr></thead><tbody>"+
+   rows.map(m=>`<tr><td><b>${m.zh}</b> <span class="pill${m.kind==="power"?" boss":""}">${m.kind==="power"?"強力":"收入"}</span><div class="small muted">${m.en}</div></td><td class="num">${m.cost}</td><td class="num">+${m.inc}</td><td class="num">${Math.round(m.rate*100)}%</td><td>${chip(m.atk)}</td><td>${chip(m.def,true)}</td><td><span class="pill">${m.role}</span></td><td class="small" style="min-width:220px">${m.abil}</td><td>${matchupCell("mercenary",m,targets)}</td></tr>`).join("")+
+   (rows.length?"":`<tr><td colspan="9" class="muted">沒有符合條件的傭兵，試著放寬篩選。</td></tr>`)+"</tbody>";
   document.querySelectorAll("#merctable th.sortable").forEach(th=>th.addEventListener("click",()=>{const k=th.dataset.k;msort=msort.k===k?{k,dir:-msort.dir}:{k,dir:1};renderMercs()}));
 }
-["#mq","#mfa","#mfd","#mfr"].forEach(s=>$(s).addEventListener("input",renderMercs));
+["#mq","#mfa","#mfd","#mfr","#mwave","#mextra"].forEach(s=>$(s).addEventListener("input",()=>{if(s==="#mwave")store.set("ltd2-matchup-wave",$(s).value);renderMercs()}));
 
 /* waves table */
 const kindPill=w=>`<span class="pill ${w.tag}">${w.kind}</span>`;
+function waveKnowledge(w){
+  const out=[];
+  Object.entries(MATCHUPS.fighters||{}).forEach(([n,ns])=>ns.filter(x=>x.targetType==="wave"&&x.target===w.en).forEach(x=>out.push(`${n}：${x.reason}`)));
+  Object.entries(MATCHUPS.mercenaries||{}).forEach(([n,ns])=>ns.filter(x=>x.targetType==="wave"&&x.target===w.en).forEach(x=>out.push(`${n}：${x.reason}`)));
+  const wave=(COMBAT.waves||[]).find(x=>x.wave===w.n),u=wave&&COMBAT.units[wave.unitKey];
+  return (u?combatStatsLine("Creature",u.name):"")+(out.slice(0,3).map(esc).join("<br>")||"<span class='muted'>先看攻擊／護甲倍率；能力對策會逐步補充。</span>");
+}
 function renderWaves(){
-  $("#wavetable").innerHTML="<thead><tr><th class='num'>波</th><th>怪物</th><th class='num'>數量</th><th>攻擊</th><th>護甲</th><th>類型</th><th class='num'>總賞金</th><th>備註</th></tr></thead><tbody>"+
-   WAVES.map(w=>`<tr><td class="num"><b>${w.n}</b></td><td><b>${w.zh}</b><div class="small muted">${w.en}</div></td><td class="num">${w.count}</td><td>${chip(w.atk)}</td><td>${chip(w.def,true)}</td><td>${kindPill(w)}</td><td class="num">${w.gold??"<span class='muted'>—</span>"}</td><td class="small" style="min-width:200px">${w.note}</td></tr>`).join("")+"</tbody>";
+  $("#wavetable").innerHTML="<thead><tr><th class='num'>波</th><th>怪物</th><th class='num'>數量</th><th>攻擊</th><th>護甲</th><th>類型</th><th class='num'>總賞金</th><th>備註</th><th>對策提示</th></tr></thead><tbody>"+
+   WAVES.map(w=>`<tr><td class="num"><b>${w.n}</b></td><td><b>${w.zh}</b><div class="small muted">${w.en}</div></td><td class="num">${w.count}</td><td>${chip(w.atk)}</td><td>${chip(w.def,true)}</td><td>${kindPill(w)}</td><td class="num">${w.gold??"<span class='muted'>—</span>"}</td><td class="small" style="min-width:200px">${w.note}</td><td class="small" style="min-width:250px">${waveKnowledge(w)}</td></tr>`).join("")+"</tbody>";
 }
 
 /* ---------- send calculator ---------- */
 let cur=17, lineup=[];
+function readBudget(value=$("#budget").value){
+  const n=parseInt(value,10);return Number.isFinite(n)&&n>=0?n:720;
+}
 const cleanUnits=l=>Array.isArray(l)?l.filter(x=>Array.isArray(x)&&FBY[String(x[0]).toLowerCase()]&&x[1]>0).map(x=>[FBY[String(x[0]).toLowerCase()].n,Math.min(99,Math.floor(x[1]))]):[];
 function loadDraft(){
   const v=parseInt(store.get("ltd2-wave"),10);cur=(v>=1&&v<=21)?v:17;
   let l=null;try{l=JSON.parse(store.get("ltd2-lineup")||"null")}catch(e){}
   lineup=l?cleanUnits(l):EXAMPLE.map(x=>[...x]);
-  const b=parseInt(store.get("ltd2-budget"),10);$("#budget").value=b>0?b:720;
+  const b=readBudget(store.get("ltd2-budget"));$("#budget").value=b;$("#budget").max=Math.max(2000,b);
 }
 loadDraft();
 
@@ -431,7 +554,7 @@ function commit(){
 }
 async function flush(){
   if(writing||!dirty||!boardId)return;writing=true;dirty=false;
-  try{await DB.collection("boards").doc(boardId).update({wave:cur,budget:parseInt($("#budget").value,10)||720,units:lineup,by:myId,updatedAt:Date.now()})}
+  try{await DB.collection("boards").doc(boardId).update({wave:cur,budget:readBudget(),units:lineup,by:myId,updatedAt:Date.now()})}
   catch(e){showErr(e)}
   writing=false;if(dirty)flush();
 }
@@ -443,7 +566,7 @@ function showErr(e){
 function applyBoard(){
   const b=curBoard();if(!b)return;
   if(dirty||writing)return; // keep local edits until they land
-  cur=(b.wave>=1&&b.wave<=21)?b.wave:17;lineup=cleanUnits(b.units);$("#budget").value=b.budget||720;
+  cur=(b.wave>=1&&b.wave<=21)?b.wave:17;lineup=cleanUnits(b.units);$("#budget").value=readBudget(b.budget);$("#budget").max=Math.max(2000,readBudget(b.budget));
 }
 async function renderBoardsUI(){
   const sel=$("#boardsel");
@@ -466,7 +589,7 @@ $("#newboard").addEventListener("click",async()=>{
   if(!name){$("#newname").setCustomValidity("請輸入陣容名稱");$("#newname").reportValidity();return}
   $("#newname").setCustomValidity("");
   const ref=DB.collection("boards").doc();
-  try{await ref.set({name:name.slice(0,40),wave:cur,budget:parseInt($("#budget").value,10)||720,units:lineup,by:myId,updatedAt:Date.now()});
+  try{await ref.set({name:name.slice(0,40),wave:cur,budget:readBudget(),units:lineup,by:myId,updatedAt:Date.now()});
     boardId=ref.id;store.set("ltd2-board",boardId);$("#newname").value="";$("#syncstatus").textContent="已存成共用陣容";}
   catch(e){showErr(e)}
 });
@@ -610,7 +733,7 @@ function renderPlan(){
   $("#profile").innerHTML=`<div class="grid2"><div class="card"><h3>${real?"對手攻擊類型（依兵力價值）":"推估對手攻擊類型"}</h3>${stackBar(P.A,ATK)}</div><div class="card"><h3>${real?"對手護甲類型（依兵力價值）":"推估對手護甲類型"}</h3>${stackBar(P.D,DEF)}</div></div>${real?`<p class="small muted" style="margin:0">兵力價值合計 ${P.tot}</p>`:""}`;
   const mode=$("#mode").value;
   const scored=scoreMercs(P).filter(s=>mode==="any"||s.m.kind===mode);
-  const budget=Math.max(20,Math.min(2000,parseInt($("#budget").value,10)||720));
+  const budget=Math.min(Number($("#budget").max)||2000,readBudget());
   const A=bestCombo(scored,budget,2),B=bestCombo(scored,budget,1);
   const top=scored.slice(0,8);lastCombos={A,B};
   $("#plan").innerHTML=`<div class="grid2">${comboCard("推薦組合","同一種傭兵最多 2 隻（光環型只派 1 隻），挑相剋最划算的",A,"A")}${comboCard("分散組合","每種最多 1 隻，類型比較多元",B,"B")}</div>
@@ -667,6 +790,97 @@ async function loadMatch(){
 
 function mythOf(list){return (list||[]).reduce((s,n)=>s+((unitOf(n)||{}).m||0),0)}
 function unitsRow(list){return (list||[]).length?list.map(n=>img(iconOf(n),nameOf(n))).join(""):`<span class="small muted">—</span>`}
+function mercObjects(list){return (list||[]).map(id=>{const u=unitOf(id),n=u&&u.n?u.n:String(id).replace(/_unit_id$/i,"").replace(/_/g," ");return byMerc(n)}).filter(Boolean)}
+function boardEntries(p,w){
+  return (at(p.buildPerWave,w)||[]).map(s=>{
+    const id=String(s).split(":")[0],u=unitOf(id),n=u&&u.n?u.n:id.replace(/_unit_id$/i,"").replace(/_/g," ");
+    return {name:n,fighter:FBY[n.toLowerCase()]||null};
+  });
+}
+function boardFighters(p,w){return boardEntries(p,w).map(e=>e.fighter).filter(Boolean)}
+function importReplayBoard(slot){
+  const p=R&&R.by[slot];if(!p)return;
+  if(!WAVES[rw]){rmsg("派兵計算目前只支援第 1–21 波。",1);return}
+  const entries=boardEntries(p,rw),received=at(p.mercenariesReceivedPerWave,rw);
+  if(!entries.length||!Array.isArray(received)){rmsg("這波缺少佈陣或收到的傭兵資料，無法載入計算機。",1);return}
+  const counts=new Map(),unknown=[];
+  entries.forEach(e=>{if(e.fighter)counts.set(e.fighter.n,(counts.get(e.fighter.n)||0)+1);else unknown.push(e.name)});
+  if(!counts.size){rmsg("這個佈陣的單位尚未收錄於計算機。",1);return}
+  let budget=0;
+  for(const id of received){
+    const u=unitOf(id),m=byMerc(u?u.n:id),cost=u?u.m:m&&m.cost;
+    if(!Number.isFinite(cost)||cost<0){rmsg(`無法辨識收到的傭兵成本：${nameOf(id)}，未載入。`,1);return}
+    budget+=cost;
+  }
+  // Imports belong to the local draft, never to a previously selected shared board.
+  clearTimeout(writeTimer);dirty=false;boardId="";store.set("ltd2-board","");
+  cur=rw+1;lineup=[...counts];$("#budget").value=budget;$("#budget").max=Math.max(2000,budget);
+  $("#delconfirm").hidden=true;
+  commit();renderBoardsUI();renderPlan();showTab("plan");
+  const note=$("#replay-import-note");note.hidden=false;
+  note.textContent=`已載入 ${p.playerName} 第 ${cur} 波佈陣；預算採此玩家「收到」的 ${budget} 秘晶。`+
+    (unknown.length?` 未收錄、未載入：${[...new Set(unknown)].join("、")}。`:"");
+  $("#tab-plan").focus();
+}
+function boardStrength(p,w,extra){
+  const entries=boardEntries(p,w),fs=entries.map(e=>e.fighter).filter(Boolean);
+  if(!WAVES[w])return {unavailable:"此波次尚未有屬性資料。"};
+  if(!entries.length)return {unavailable:"缺少這波佈陣資料。"};
+  const missing=entries.filter(e=>!e.fighter).map(e=>e.name);
+  if(missing.length)return {unavailable:`缺少單位屬性：${[...new Set(missing)].join("、")}`};
+  const targets=targetsFor(WAVES[w],extra),base=at(p.valuePerWave,w)??fs.reduce((s,f)=>s+(f.val||0),0);
+  const stats=statStrength(fs,w,extra,base);
+  if(stats.model)return stats;
+  let aw=0,dw=0,total=0;
+  fs.forEach(f=>{const v=f.val||1,s=matchupScore(f,targets);aw+=v*s.attack;dw+=v*s.defense;total+=v});
+  const attack=aw/total,defense=dw/total;
+  return {attack,defense,overall:Math.sqrt(attack*defense),effective:Math.round(base*Math.sqrt(attack*defense)),base,targets,fighters:fs,fallbackReason:stats.reason};
+}
+function signed(n){return `${n>=0?"+":""}${n}`}
+function powerCalculation(s,label){
+  if(s.unavailable)return `${label}\n${s.unavailable}`;
+  if(s.model==="hp-dps"){
+    const groups=new Map();s.details.forEach(x=>{const g=groups.get(x.name)||{...x,count:0};g.count++;groups.set(x.name,g)});
+    return `${label} · HP／DPS 加權相剋估計\n來源：${COMBAT.source}\n官方表版本 ${COMBAT.version}，DPS 為表列約數；不保證吻合此對局 hotfix。\n原始戰士價值 V = ${s.base}\n\n`+
+      `敵方：${s.enemies.map(e=>`${e.name} ${e.count} 隻（每隻 HP ${e.unit.hp}、DPS ${e.unit.dps}）`).join("、")}\n`+
+      `敵方總 HP = ${s.enemyHp}，總 DPS = ${s.enemyDps}\n我方總 HP = ${s.hp}，總 DPS = ${s.dps}\n\n`+
+      `每個戰士：攻 = Σ(敵方 HP × 相剋倍率) ÷ 敵方總 HP\n守 = 1 ÷ [Σ(敵方 DPS × 對我方護甲倍率) ÷ 敵方總 DPS]\n`+
+      [...groups.values()].map(x=>`${x.name} ×${x.count}：每隻 HP ${x.unit.hp}、DPS ${x.unit.dps}；攻 ${x.attack.toFixed(4)}，守 ${x.defense.toFixed(4)}`).join("\n")+
+      `\n\n有效 DPS = Σ(我方 DPS × 攻) = ${s.effectiveDps.toFixed(2)}\n有效 HP = Σ(我方 HP × 守) = ${s.effectiveHp.toFixed(2)}\n`+
+      `A = 有效 DPS ÷ 原始 DPS = ${s.attack.toFixed(4)}\nD = 有效 HP ÷ 原始 HP = ${s.defense.toFixed(4)}\n相剋係數 = √(A × D) = ${s.overall.toFixed(4)}\n`+
+      `估計戰力 = round(${s.base} × ${s.overall.toFixed(4)}) = ${s.effective}\n相對原始價值 = ${signed(s.effective-s.base)}\n\n`+
+      `含敵方總量的靜態比值 = √(有效 HP × 有效 DPS ÷ 敵方 HP ÷ 敵方 DPS) = ${s.pressureRatio.toFixed(3)}（非守住機率）\n`+
+      `主數字仍是價值基準的相剋指數；同屬性傭兵可讓主數字不變，但上述總量比值下降。未模擬技能、光環、召喚、站位、集火或戰鬥過程；不可當作實際勝負或技能型單位的完整強度。`;
+  }
+  const groups=new Map();s.fighters.forEach(f=>{const g=groups.get(f.n)||{f,count:0};g.count++;groups.set(f.n,g)});
+  const targetGroups=new Map();s.targets.forEach(t=>targetGroups.set(t.zh,(targetGroups.get(t.zh)||0)+t.weight));
+  const rows=[...groups.values()].map(({f,count})=>{
+    const m=matchupScore(f,s.targets);
+    return `${f.n} ×${count}（價值權重 ${f.val*count}）：攻 ${m.attack.toFixed(4)}，守 ${m.defense.toFixed(4)}`;
+  });
+  return `${label}\n退回屬性／價值估計：${s.fallbackReason||"缺少戰鬥數值"}\n原始戰士價值 V = ${s.base}\n`+
+    `敵方權重：${[...targetGroups].map(([n,w])=>`${n} ${w}`).join("、")}\n`+
+    `波次權重取表列數量首個數字；傭兵每隻權重 = 秘晶成本 ÷ 20（至少 1）。\n\n`+
+    `每個戰士：\n攻 = Σ(敵方權重 × 我方攻擊對敵方護甲倍率) ÷ 敵方總權重\n`+
+    `守 = Σ(敵方權重 ÷ 敵方攻擊對我方護甲倍率) ÷ 敵方總權重\n`+
+    rows.join("\n")+`\n\n依戰士價值加權平均：A = ${s.attack.toFixed(4)}，D = ${s.defense.toFixed(4)}\n`+
+    `相剋係數 = √(A × D) = ${s.overall.toFixed(4)}\n`+
+    `估計戰力 = round(${s.base} × ${s.overall.toFixed(4)}) = ${s.effective}\n`+
+    `相對原始價值 = ${s.effective} − ${s.base} = ${signed(s.effective-s.base)}\n\n`+
+    `這是屬性修正值；未計入技能、站位、HP／DPS 或敵方總兵力。加傭兵後上升表示相剋較有利，不代表更容易守住。`;
+}
+function powerCell(s,label){
+  const tip=powerCalculation(s,label),delta=s.unavailable?0:s.effective-s.base;
+  const tone=delta>0?"power-positive":delta<0?"power-negative":"";
+  return `<button type="button" class="power-value" data-calculation="${esc(tip)}" aria-label="${esc(label)}，查看計算"><span>${label}${s.fallbackReason?" · 屬性備援":""}</span><b>${s.unavailable?"—":s.effective}</b><small class="${tone}">${s.unavailable?"資料不足":`${signed(delta)}${s.base?` (${signed(Number(((s.effective/s.base-1)*100).toFixed(1)))}%)`:""}`}</small></button>`;
+}
+function analysisCard(p){
+  const received=at(p.mercenariesReceivedPerWave,rw),recv=mercObjects(received||[]);
+  const base=boardStrength(p,rw,[]);
+  const combined=!Array.isArray(received)?{unavailable:"缺少這波收到的傭兵資料。"}:
+    recv.length!==received.length?{unavailable:"部分收到的傭兵尚未有屬性資料。"}:boardStrength(p,rw,recv);
+  return `<div class="analysis-card" data-analysis-slot="${p.playerSlot}"><div class="lanehead"><b>${esc(p.playerName)}</b></div><div class="power-grid">${powerCell(base,"基礎波次")}${powerCell(combined,"波次＋收到")}</div></div>`;
+}
 
 function laneHTML(p){
   const w=rw,g=R.g,to=R.by[SEND_TO[p.playerSlot]],from=R.P.find(q=>SEND_TO[q.playerSlot]===p.playerSlot);
@@ -686,7 +900,7 @@ function laneHTML(p){
     <div class="lrow"><span>${esc(LEGZH[p.legion]||p.legion)} · spell</span><span class="icons">${p.chosenSpell&&p.chosenSpell!=="none"?img(cdn(pascal(p.chosenSpell)+".png"),p.chosenSpell):"—"}</span></div>
     <div class="lrow"><span>骰到</span><span class="icons">${rolls.length?rolls.map(r=>img(iconOf(r),nameOf(r))).join(""):"—"}</span></div>
     <div class="stats"><div><b>${v(p.valuePerWave)}</b><span>戰士價值</span></div><div><b>${v(p.workersPerWave,Math.round)}</b><span>工人</span></div><div><b>${v(p.incomePerWave)}</b><span>收入</span></div><div><b>${v(p.netWorthPerWave)}</b><span>淨值</span></div></div>
-    <div class="board" aria-label="第 ${w+1} 波佈陣">${board}</div>
+    <div class="board" data-player-slot="${p.playerSlot}" tabindex="0" title="右鍵載入派兵計算：此佈陣與此玩家收到秘晶" aria-label="${esc(p.playerName)} 第 ${w+1} 波佈陣，右鍵或按 Enter 載入派兵計算">${board}</div>
     <div class="lrow"><span>送出 → ${esc(to?to.playerName:"?")}</span><span class="v">${mythOf(sent)} 秘晶</span></div>
     <div class="icons">${unitsRow(sent)}</div>
     <div class="lrow"><span>收到 ← ${esc(from?from.playerName:"?")}</span><span class="v">${mythOf(recv)} 秘晶</span></div>
@@ -711,6 +925,7 @@ function kingHTML(side){
 
 function renderReplay(){
   if(!R)return;
+  hidePowerTooltip();
   const g=R.g,n=g.endingWave||(R.P[0].valuePerWave||[]).length;
   const date=new Date(g.date);
   $("#rview").innerHTML=`<div class="panel">
@@ -719,7 +934,8 @@ function renderReplay(){
       <h3>波末王血</h3>
       <div class="kings">${kingHTML("left")}${kingHTML("right")}</div>
     </div>
-    <div class="scroll"><div class="lanes">${R.P.map(laneHTML).join("")}</div></div>
+    <div class="controls" style="justify-content:space-between"><h2>強度比較</h2><span class="small muted">HP／DPS 加權相剋估計 · ± 相對原始戰士價值 · 懸停看公式與限制 · 右鍵佈陣載入派兵計算</span></div>
+    <div class="scroll"><div class="replay-grid">${R.P.map(analysisCard).join("")}${R.P.map(laneHTML).join("")}</div></div>
     <div class="panel small">
       <div class="controls" style="gap:4px 18px"><span>模式 <b>${g.queueType==="Normal"?"2v2 排位":esc(g.queueType)}</b></span><span>日期 <b>${isNaN(date)?"—":date.toLocaleString("zh-TW",{hour12:false})}</b></span><span>版本 <b>${esc(g.version)}</b></span><span>對局 elo <b>${g.gameElo??"—"}</b></span><span>時長 <b>${Math.round((g.gameLength||0)/60)} 分</b></span><span>結束於第 <b>${n}</b> 波</span></div>
       <p class="note">送出／收到是「這一波上場」的傭兵，可能是上一波戰鬥中就僱好的；收入在僱用當下就增加，所以會比送出早一波反映。少數傭兵（例如 Robo）在官方紀錄裡，送出與對方收到會落在不同波，總數仍相同。王血是每波打完時的剩餘血量。漏怪 % = 漏掉單位的官方賞金 ÷ 這一波怪物的總賞金；漏掉的傭兵也算進分子，所以收到大量傭兵時可能超過 100%。單位資料對照 ${esc(UNITS.version||"—")}。</p>
@@ -729,7 +945,43 @@ function renderReplay(){
 
 $("#rgo").addEventListener("click",loadMatch);
 $("#rid").addEventListener("keydown",e=>{if(e.key==="Enter")loadMatch()});
+$("#rview").addEventListener("contextmenu",e=>{
+  const board=e.target.closest(".board[data-player-slot]");if(!board)return;
+  e.preventDefault();importReplayBoard(Number(board.dataset.playerSlot));
+});
+$("#rview").addEventListener("keydown",e=>{
+  const board=e.target.closest(".board[data-player-slot]");if(!board)return;
+  if(e.key==="Enter"||e.key===" "){e.preventDefault();importReplayBoard(Number(board.dataset.playerSlot))}
+});
+let powerTooltipTimer=null;
+function hidePowerTooltip(){
+  clearTimeout(powerTooltipTimer);
+  $("#power-tooltip").hidden=true;
+  document.querySelectorAll("[data-calculation][aria-describedby]").forEach(el=>el.removeAttribute("aria-describedby"));
+}
+function showPowerTooltip(el){
+  hidePowerTooltip();
+  const box=$("#power-tooltip"),rect=el.getBoundingClientRect();
+  box.textContent=el.dataset.calculation;box.hidden=false;el.setAttribute("aria-describedby","power-tooltip");
+  box.style.left=`${Math.max(12,Math.min(rect.left,window.innerWidth-box.offsetWidth-12))}px`;
+  box.style.top=`${Math.max(12,Math.min(rect.bottom+6,window.innerHeight-box.offsetHeight-12))}px`;
+}
+$("#rview").addEventListener("mouseover",e=>{
+  const el=e.target.closest("[data-calculation]");if(el)showPowerTooltip(el);
+});
+$("#rview").addEventListener("mouseout",e=>{
+  const el=e.target.closest("[data-calculation]");
+  if(el&&!el.contains(e.relatedTarget)&&!$("#power-tooltip").contains(e.relatedTarget))powerTooltipTimer=setTimeout(hidePowerTooltip,180);
+});
+$("#power-tooltip").addEventListener("mouseenter",()=>clearTimeout(powerTooltipTimer));
+$("#power-tooltip").addEventListener("mouseleave",hidePowerTooltip);
+$("#rview").addEventListener("focusin",e=>{const el=e.target.closest("[data-calculation]");if(el)showPowerTooltip(el)});
+$("#rview").addEventListener("focusout",e=>{if(e.target.closest("[data-calculation]"))hidePowerTooltip()});
+$("#rview").addEventListener("click",e=>{const el=e.target.closest("[data-calculation]");if(el)showPowerTooltip(el)});
+window.addEventListener("resize",hidePowerTooltip);
+document.addEventListener("scroll",e=>{if(e.target!==$("#power-tooltip"))hidePowerTooltip()},true);
 document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")hidePowerTooltip();
   if(!R||$('[data-sec="replay"]').hidden||e.target.closest("input,select,textarea"))return;
   const n=R.g.endingWave||1;
   if(e.key==="ArrowRight"&&rw<n-1){rw++;renderReplay()}
@@ -737,6 +989,7 @@ document.addEventListener("keydown",e=>{
 });
 {const id=store.get("ltd2-match");if(id)$("#rid").value=id}
 
+populateMatchupControls();
 renderMatrix();renderFighters();renderMercs();renderWaves();renderPlan();
 {const t=store.get("ltd2-tab");if(t&&document.querySelector(`[data-sec="${t}"]`))showTab(t)}
 </script>

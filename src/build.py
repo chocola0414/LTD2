@@ -21,9 +21,13 @@ for r in rows:
     if r[0] == "Atom": r[6] = "Nucleus"
 out = [{"n":r[0],"leg":r[1],"cost":r[2],"val":r[3] or r[2],"tier":r[4],"role":r[5],"up":r[6],"atk":r[7],"def":r[8],"ab":r[9],"note":r[10]} for r in rows]
 units = (d.parent / "data" / "units.json").read_text(encoding="utf-8")  # 由 fetch_units.py 產生
+matchups = (d.parent / "data" / "matchup_notes.json").read_text(encoding="utf-8")
+combat = (d.parent / "data" / "combat_stats.json").read_text(encoding="utf-8")
 html = (d / "ltd2-db.src.html").read_text(encoding="utf-8")
 html = html.replace("/*__FIGHTERS__*/[]", json.dumps(out, ensure_ascii=False))
 html = html.replace("/*__UNITS__*/{}", units)
+html = html.replace("/*__MATCHUPS__*/{}", matchups)
+html = html.replace("/*__COMBAT__*/{}", combat.replace("<", "\\u003c"))
 # GitHub 版沒有 claude.ai 的共用資料，提示改寫成對應的說法
 html = html.replace("本機草稿（共用資料未連線）", "本機草稿（陣容只存在你的瀏覽器）")
 html = html.replace("共用資料未連線，派兵紀錄需要登入 claude.ai 開啟這個頁面才能使用。",

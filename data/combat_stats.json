@@ -1,0 +1,2605 @@
+{
+  "version": "26.9",
+  "source": "https://beta.legiontd2.com/guide/units/",
+  "fetchedAt": "2026-10-11T12:53:13.438887+00:00",
+  "precision": "DPS as displayed in guide (rounded); not inferred from attack speed",
+  "limitations": "Base stats; no skills, buffs, positioning or hotfix-version guarantee",
+  "units": {
+    "Fighter:pollywog": {
+      "name": "Pollywog",
+      "class": "Fighter",
+      "hp": 80,
+      "dps": 9,
+      "range": 350,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/pollywog",
+      "abilityNames": []
+    },
+    "Fighter:devilfish": {
+      "name": "Devilfish",
+      "class": "Fighter",
+      "hp": 1080,
+      "dps": 34,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/devilfish",
+      "abilityNames": [
+        "Adapt (into Seraphin)"
+      ]
+    },
+    "Fighter:seraphin": {
+      "name": "Seraphin",
+      "class": "Fighter",
+      "hp": 660,
+      "dps": 61,
+      "range": 350,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/seraphin",
+      "abilityNames": [
+        "Adapt (into Devilfish)"
+      ]
+    },
+    "Fighter:angler": {
+      "name": "Angler",
+      "class": "Fighter",
+      "hp": 360,
+      "dps": 12,
+      "range": 125,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/angler",
+      "abilityNames": [
+        "Junior Fisherman"
+      ]
+    },
+    "Fighter:bounty hunter": {
+      "name": "Bounty Hunter",
+      "class": "Fighter",
+      "hp": 1770,
+      "dps": 71,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/bounty-hunter",
+      "abilityNames": [
+        "Commercial Fisherman"
+      ]
+    },
+    "Fighter:kingpin": {
+      "name": "Kingpin",
+      "class": "Fighter",
+      "hp": 4410,
+      "dps": 175,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/kingpin",
+      "abilityNames": [
+        "Elite Fisherman"
+      ]
+    },
+    "Fighter:sea serpent": {
+      "name": "Sea Serpent",
+      "class": "Fighter",
+      "hp": 720,
+      "dps": 67,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/sea-serpent",
+      "abilityNames": [
+        "Ambush"
+      ]
+    },
+    "Fighter:deepcoiler": {
+      "name": "Deepcoiler",
+      "class": "Fighter",
+      "hp": 2200,
+      "dps": 207,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/deepcoiler",
+      "abilityNames": [
+        "Ambush"
+      ]
+    },
+    "Fighter:grarl": {
+      "name": "Grarl",
+      "class": "Fighter",
+      "hp": 1340,
+      "dps": 52,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/grarl",
+      "abilityNames": [
+        "Delicacy"
+      ]
+    },
+    "Fighter:ocean templar": {
+      "name": "Ocean Templar",
+      "class": "Fighter",
+      "hp": 3600,
+      "dps": 123,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/ocean-templar",
+      "abilityNames": [
+        "Resonance"
+      ]
+    },
+    "Fighter:king claw": {
+      "name": "King Claw",
+      "class": "Fighter",
+      "hp": 4450,
+      "dps": 102,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/king-claw",
+      "abilityNames": [
+        "Shell Shock"
+      ]
+    },
+    "Fighter:priestess of the abyss": {
+      "name": "Priestess Of The Abyss",
+      "class": "Fighter",
+      "hp": 1000,
+      "dps": 23,
+      "range": 600,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/priestess-of-the-abyss",
+      "abilityNames": [
+        "Burst Attack",
+        "Invigorate"
+      ]
+    },
+    "Fighter:azeria": {
+      "name": "Azeria",
+      "class": "Fighter",
+      "hp": 3100,
+      "dps": 65,
+      "range": 600,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/azeria",
+      "abilityNames": [
+        "Invigorate",
+        "Echostrike"
+      ]
+    },
+    "Fighter:eggsack": {
+      "name": "Eggsack",
+      "class": "Fighter",
+      "hp": 2400,
+      "dps": 0,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/eggsack",
+      "abilityNames": [
+        "Incubation",
+        "Azurite Shell"
+      ]
+    },
+    "Fighter:hydra": {
+      "name": "Hydra",
+      "class": "Fighter",
+      "hp": 1920,
+      "dps": 107,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/hydra",
+      "abilityNames": [
+        "Hydralings"
+      ]
+    },
+    "Fighter:chained fist": {
+      "name": "Chained Fist",
+      "class": "Fighter",
+      "hp": 220,
+      "dps": 7,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/chained-fist",
+      "abilityNames": []
+    },
+    "Fighter:oathbreaker": {
+      "name": "Oathbreaker",
+      "class": "Fighter",
+      "hp": 1090,
+      "dps": 24,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/oathbreaker",
+      "abilityNames": [
+        "Unchained Rage"
+      ]
+    },
+    "Fighter:oathbreaker final form": {
+      "name": "Oathbreaker Final Form",
+      "class": "Fighter",
+      "hp": 2650,
+      "dps": 72,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/oathbreaker-final-form",
+      "abilityNames": [
+        "Unchained Rage Final Form"
+      ]
+    },
+    "Fighter:golden buckler": {
+      "name": "Golden Buckler",
+      "class": "Fighter",
+      "hp": 600,
+      "dps": 16,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/golden-buckler",
+      "abilityNames": []
+    },
+    "Fighter:royal guard": {
+      "name": "Royal Guard",
+      "class": "Fighter",
+      "hp": 1770,
+      "dps": 57,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/royal-guard",
+      "abilityNames": [
+        "Radiant Shielding"
+      ]
+    },
+    "Fighter:sacred steed": {
+      "name": "Sacred Steed",
+      "class": "Fighter",
+      "hp": 760,
+      "dps": 28,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/sacred-steed",
+      "abilityNames": [
+        "Mana Blessing"
+      ]
+    },
+    "Fighter:pegasus": {
+      "name": "Pegasus",
+      "class": "Fighter",
+      "hp": 2560,
+      "dps": 92,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/pegasus",
+      "abilityNames": [
+        "Mana Miracle"
+      ]
+    },
+    "Fighter:elite archer": {
+      "name": "Elite Archer",
+      "class": "Fighter",
+      "hp": 900,
+      "dps": 27,
+      "range": 450,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/elite-archer",
+      "abilityNames": [
+        "Multishot"
+      ]
+    },
+    "Fighter:trinity archer": {
+      "name": "Trinity Archer",
+      "class": "Fighter",
+      "hp": 2530,
+      "dps": 61,
+      "range": 450,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/trinity-archer",
+      "abilityNames": [
+        "Hypershot"
+      ]
+    },
+    "Fighter:radiant halo": {
+      "name": "Radiant Halo",
+      "class": "Fighter",
+      "hp": 1200,
+      "dps": 51,
+      "range": 650,
+      "atk": "Pure",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/radiant-halo",
+      "abilityNames": [
+        "Particle Wave"
+      ]
+    },
+    "Fighter:arc of justice": {
+      "name": "Arc Of Justice",
+      "class": "Fighter",
+      "hp": 3250,
+      "dps": 137,
+      "range": 650,
+      "atk": "Pure",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/arc-of-justice",
+      "abilityNames": [
+        "Purification Beam"
+      ]
+    },
+    "Fighter:holy avenger": {
+      "name": "Holy Avenger",
+      "class": "Fighter",
+      "hp": 2550,
+      "dps": 95,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/holy-avenger",
+      "abilityNames": [
+        "Aegis"
+      ]
+    },
+    "Fighter:sovereign": {
+      "name": "Sovereign",
+      "class": "Fighter",
+      "hp": 6500,
+      "dps": 237,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/sovereign",
+      "abilityNames": [
+        "Final Judgment"
+      ]
+    },
+    "Fighter:proton": {
+      "name": "Proton",
+      "class": "Fighter",
+      "hp": 120,
+      "dps": 12,
+      "range": 300,
+      "atk": "Pure",
+      "def": "Immaterial",
+      "url": "https://beta.legiontd2.com/units/proton",
+      "abilityNames": []
+    },
+    "Fighter:atom": {
+      "name": "Atom",
+      "class": "Fighter",
+      "hp": 640,
+      "dps": 46,
+      "range": 300,
+      "atk": "Pure",
+      "def": "Immaterial",
+      "url": "https://beta.legiontd2.com/units/atom",
+      "abilityNames": [
+        "Generator",
+        "Ionic Force"
+      ]
+    },
+    "Fighter:nucleus": {
+      "name": "Nucleus",
+      "class": "Fighter",
+      "hp": 1880,
+      "dps": 46,
+      "range": 500,
+      "atk": "Pure",
+      "def": "Immaterial",
+      "url": "https://beta.legiontd2.com/units/nucleus",
+      "abilityNames": [
+        "Atomic Acceleration",
+        "Singularity Core"
+      ]
+    },
+    "Fighter:aqua spirit": {
+      "name": "Aqua Spirit",
+      "class": "Fighter",
+      "hp": 370,
+      "dps": 13,
+      "range": 400,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/aqua-spirit",
+      "abilityNames": [
+        "Water Bounce"
+      ]
+    },
+    "Fighter:rogue wave": {
+      "name": "Rogue Wave",
+      "class": "Fighter",
+      "hp": 1200,
+      "dps": 36,
+      "range": 400,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/rogue-wave",
+      "abilityNames": [
+        "Delusion"
+      ]
+    },
+    "Fighter:fire elemental": {
+      "name": "Fire Elemental",
+      "class": "Fighter",
+      "hp": 1400,
+      "dps": 46,
+      "range": 400,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/fire-elemental",
+      "abilityNames": [
+        "Combustion"
+      ]
+    },
+    "Fighter:windhawk": {
+      "name": "Windhawk",
+      "class": "Fighter",
+      "hp": 770,
+      "dps": 43,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/windhawk",
+      "abilityNames": []
+    },
+    "Fighter:violet": {
+      "name": "Violet",
+      "class": "Fighter",
+      "hp": 2400,
+      "dps": 69,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/violet",
+      "abilityNames": [
+        "Lightning Strike"
+      ]
+    },
+    "Fighter:mudman": {
+      "name": "Mudman",
+      "class": "Fighter",
+      "hp": 1330,
+      "dps": 39,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/mudman",
+      "abilityNames": [
+        "Harden"
+      ]
+    },
+    "Fighter:golem": {
+      "name": "Golem",
+      "class": "Fighter",
+      "hp": 3810,
+      "dps": 114,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/golem",
+      "abilityNames": [
+        "Harden"
+      ]
+    },
+    "Fighter:disciple": {
+      "name": "Disciple",
+      "class": "Fighter",
+      "hp": 1150,
+      "dps": 59,
+      "range": 500,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/disciple",
+      "abilityNames": [
+        "Mana Burst"
+      ]
+    },
+    "Fighter:starcaller": {
+      "name": "Starcaller",
+      "class": "Fighter",
+      "hp": 2850,
+      "dps": 112,
+      "range": 500,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/starcaller",
+      "abilityNames": [
+        "Amplify Magic",
+        "Asteroid"
+      ]
+    },
+    "Fighter:fire lord": {
+      "name": "Fire Lord",
+      "class": "Fighter",
+      "hp": 2000,
+      "dps": 138,
+      "range": 200,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/fire-lord",
+      "abilityNames": [
+        "Molten Shield",
+        "Overheat"
+      ]
+    },
+    "Fighter:fenix": {
+      "name": "Fenix",
+      "class": "Fighter",
+      "hp": 4970,
+      "dps": 343,
+      "range": 200,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/fenix",
+      "abilityNames": [
+        "Prismatic Shield",
+        "Overheat"
+      ]
+    },
+    "Fighter:bone warrior": {
+      "name": "Bone Warrior",
+      "class": "Fighter",
+      "hp": 130,
+      "dps": 4,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/bone-warrior",
+      "abilityNames": [
+        "Skeletal Regeneration"
+      ]
+    },
+    "Fighter:fire archer": {
+      "name": "Fire Archer",
+      "class": "Fighter",
+      "hp": 450,
+      "dps": 28,
+      "range": 550,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/fire-archer",
+      "abilityNames": [
+        "Flaming Arrows",
+        "Skeletal Regeneration"
+      ]
+    },
+    "Fighter:dark mage": {
+      "name": "Dark Mage",
+      "class": "Fighter",
+      "hp": 500,
+      "dps": 29,
+      "range": 600,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/dark-mage",
+      "abilityNames": [
+        "Mind Warp",
+        "Skeletal Regeneration"
+      ]
+    },
+    "Fighter:bone crusher": {
+      "name": "Bone Crusher",
+      "class": "Fighter",
+      "hp": 1090,
+      "dps": 36,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/bone-crusher",
+      "abilityNames": [
+        "Skeletal Regeneration"
+      ]
+    },
+    "Fighter:gargoyle": {
+      "name": "Gargoyle",
+      "class": "Fighter",
+      "hp": 310,
+      "dps": 15,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/gargoyle",
+      "abilityNames": [
+        "Stone Skin"
+      ]
+    },
+    "Fighter:green devil": {
+      "name": "Green Devil",
+      "class": "Fighter",
+      "hp": 1210,
+      "dps": 61,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/green-devil",
+      "abilityNames": [
+        "Granite Skin"
+      ]
+    },
+    "Fighter:gateguard": {
+      "name": "Gateguard",
+      "class": "Fighter",
+      "hp": 570,
+      "dps": 25,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/gateguard",
+      "abilityNames": [
+        "Summon Hound"
+      ]
+    },
+    "Fighter:harbinger": {
+      "name": "Harbinger",
+      "class": "Fighter",
+      "hp": 1650,
+      "dps": 74,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/harbinger",
+      "abilityNames": [
+        "Summon Cerberus"
+      ]
+    },
+    "Fighter:butcher": {
+      "name": "Butcher",
+      "class": "Fighter",
+      "hp": 1340,
+      "dps": 51,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/butcher",
+      "abilityNames": [
+        "Leech"
+      ]
+    },
+    "Fighter:head chef": {
+      "name": "Head Chef",
+      "class": "Fighter",
+      "hp": 3750,
+      "dps": 140,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/head-chef",
+      "abilityNames": [
+        "Cannibalism"
+      ]
+    },
+    "Fighter:nightmare": {
+      "name": "Nightmare",
+      "class": "Fighter",
+      "hp": 1180,
+      "dps": 132,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/nightmare",
+      "abilityNames": []
+    },
+    "Fighter:doppelganger": {
+      "name": "Doppelganger",
+      "class": "Fighter",
+      "hp": 3330,
+      "dps": 266,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/doppelganger",
+      "abilityNames": [
+        "Fatality"
+      ]
+    },
+    "Fighter:lord of death": {
+      "name": "Lord Of Death",
+      "class": "Fighter",
+      "hp": 1240,
+      "dps": 59,
+      "range": 500,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/lord-of-death",
+      "abilityNames": [
+        "Conjure Dragon"
+      ]
+    },
+    "Fighter:hades": {
+      "name": "Hades",
+      "class": "Fighter",
+      "hp": 3100,
+      "dps": 148,
+      "range": 500,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/hades",
+      "abilityNames": [
+        "Conjure Thanatos",
+        "Necromancy"
+      ]
+    },
+    "Fighter:buzz": {
+      "name": "Buzz",
+      "class": "Fighter",
+      "hp": 150,
+      "dps": 10,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/buzz",
+      "abilityNames": [
+        "Anaphylaxis"
+      ]
+    },
+    "Fighter:consort": {
+      "name": "Consort",
+      "class": "Fighter",
+      "hp": 900,
+      "dps": 50,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/consort",
+      "abilityNames": [
+        "Paraphylaxis"
+      ]
+    },
+    "Fighter:ranger": {
+      "name": "Ranger",
+      "class": "Fighter",
+      "hp": 330,
+      "dps": 32,
+      "range": 700,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/ranger",
+      "abilityNames": [
+        "Accuracy"
+      ]
+    },
+    "Fighter:daphne": {
+      "name": "Daphne",
+      "class": "Fighter",
+      "hp": 1080,
+      "dps": 96,
+      "range": 700,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/daphne",
+      "abilityNames": [
+        "Precision",
+        "Mark Target"
+      ]
+    },
+    "Fighter:wileshroom": {
+      "name": "Wileshroom",
+      "class": "Fighter",
+      "hp": 1450,
+      "dps": 46,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/wileshroom",
+      "abilityNames": [
+        "Cell Regrowth"
+      ]
+    },
+    "Fighter:canopie": {
+      "name": "Canopie",
+      "class": "Fighter",
+      "hp": 4150,
+      "dps": 132,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/canopie",
+      "abilityNames": [
+        "Cell Regrowth"
+      ]
+    },
+    "Fighter:honeyflower": {
+      "name": "Honeyflower",
+      "class": "Fighter",
+      "hp": 1420,
+      "dps": 8,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/honeyflower",
+      "abilityNames": [
+        "Fragrance"
+      ]
+    },
+    "Fighter:deathcap": {
+      "name": "Deathcap",
+      "class": "Fighter",
+      "hp": 4280,
+      "dps": 32,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/deathcap",
+      "abilityNames": [
+        "Noxious Scent"
+      ]
+    },
+    "Fighter:antler": {
+      "name": "Antler",
+      "class": "Fighter",
+      "hp": 2350,
+      "dps": 65,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/antler",
+      "abilityNames": [
+        "Thick Hide"
+      ]
+    },
+    "Fighter:whitemane": {
+      "name": "Whitemane",
+      "class": "Fighter",
+      "hp": 4470,
+      "dps": 124,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/whitemane",
+      "abilityNames": []
+    },
+    "Fighter:banana bunk": {
+      "name": "Banana Bunk",
+      "class": "Fighter",
+      "hp": 3090,
+      "dps": 82,
+      "range": 200,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/banana-bunk",
+      "abilityNames": [
+        "Barbs"
+      ]
+    },
+    "Fighter:banana haven": {
+      "name": "Banana Haven",
+      "class": "Fighter",
+      "hp": 7740,
+      "dps": 72,
+      "range": 200,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/banana-haven",
+      "abilityNames": [
+        "Thorns",
+        "Tribal Warfare"
+      ]
+    },
+    "Fighter:seedling": {
+      "name": "Seedling",
+      "class": "Fighter",
+      "hp": 100,
+      "dps": 1,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/seedling",
+      "abilityNames": [
+        "Razor Leaf"
+      ]
+    },
+    "Fighter:chloropixie": {
+      "name": "Chloropixie",
+      "class": "Fighter",
+      "hp": 570,
+      "dps": 59,
+      "range": 400,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/chloropixie",
+      "abilityNames": [
+        "Early Harvest"
+      ]
+    },
+    "Fighter:sakura": {
+      "name": "Sakura",
+      "class": "Fighter",
+      "hp": 1400,
+      "dps": 117,
+      "range": 400,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/sakura",
+      "abilityNames": [
+        "Superbloom"
+      ]
+    },
+    "Fighter:slime larva": {
+      "name": "Slime Larva",
+      "class": "Fighter",
+      "hp": 460,
+      "dps": 23,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/slime-larva",
+      "abilityNames": []
+    },
+    "Fighter:slime siren": {
+      "name": "Slime Siren",
+      "class": "Fighter",
+      "hp": 1170,
+      "dps": 67,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/slime-siren",
+      "abilityNames": [
+        "Slime Propagation"
+      ]
+    },
+    "Fighter:seadragon": {
+      "name": "Seadragon",
+      "class": "Fighter",
+      "hp": 830,
+      "dps": 34,
+      "range": 450,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/seadragon",
+      "abilityNames": [
+        "Life Exchange"
+      ]
+    },
+    "Fighter:lifebinder": {
+      "name": "Lifebinder",
+      "class": "Fighter",
+      "hp": 2530,
+      "dps": 101,
+      "range": 450,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/lifebinder",
+      "abilityNames": [
+        "Soul Transfer"
+      ]
+    },
+    "Fighter:cursed casket": {
+      "name": "Cursed Casket",
+      "class": "Fighter",
+      "hp": 1400,
+      "dps": 15,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/cursed-casket",
+      "abilityNames": [
+        "Iron Hail"
+      ]
+    },
+    "Fighter:cage of pain": {
+      "name": "Cage Of Pain",
+      "class": "Fighter",
+      "hp": 2480,
+      "dps": 27,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/cage-of-pain",
+      "abilityNames": [
+        "Sword Rain"
+      ]
+    },
+    "Fighter:iron maiden": {
+      "name": "Iron Maiden",
+      "class": "Fighter",
+      "hp": 3530,
+      "dps": 38,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/iron-maiden",
+      "abilityNames": [
+        "Blade Storm"
+      ]
+    },
+    "Fighter:gatling gun": {
+      "name": "Gatling Gun",
+      "class": "Fighter",
+      "hp": 950,
+      "dps": 121,
+      "range": 800,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/gatling-gun",
+      "abilityNames": []
+    },
+    "Fighter:vulcan cannon": {
+      "name": "Vulcan Cannon",
+      "class": "Fighter",
+      "hp": 2650,
+      "dps": 333,
+      "range": 800,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/vulcan-cannon",
+      "abilityNames": []
+    },
+    "Fighter:shadow dancer": {
+      "name": "Shadow Dancer",
+      "class": "Fighter",
+      "hp": 2350,
+      "dps": 106,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/shadow-dancer",
+      "abilityNames": [
+        "Shadowbreeder"
+      ]
+    },
+    "Fighter:dread knight": {
+      "name": "Dread Knight",
+      "class": "Fighter",
+      "hp": 5950,
+      "dps": 261,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/dread-knight",
+      "abilityNames": [
+        "Hatebreeder"
+      ]
+    },
+    "Fighter:goblin copter": {
+      "name": "Goblin Copter",
+      "class": "Fighter",
+      "hp": 120,
+      "dps": 12,
+      "range": 500,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/goblin-copter",
+      "abilityNames": []
+    },
+    "Fighter:whirlybird": {
+      "name": "Whirlybird",
+      "class": "Fighter",
+      "hp": 900,
+      "dps": 43,
+      "range": 500,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/whirlybird",
+      "abilityNames": [
+        "Giga Boomstick"
+      ]
+    },
+    "Fighter:howler": {
+      "name": "Howler",
+      "class": "Fighter",
+      "hp": 350,
+      "dps": 15,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/howler",
+      "abilityNames": [
+        "Wolf Pack"
+      ]
+    },
+    "Fighter:sunfang": {
+      "name": "Sunfang",
+      "class": "Fighter",
+      "hp": 1990,
+      "dps": 83,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/sunfang",
+      "abilityNames": [
+        "Wolf Pack"
+      ]
+    },
+    "Fighter:treant": {
+      "name": "Treant",
+      "class": "Fighter",
+      "hp": 940,
+      "dps": 42,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/treant",
+      "abilityNames": [
+        "Exuberance"
+      ]
+    },
+    "Fighter:tree of life": {
+      "name": "Tree Of Life",
+      "class": "Fighter",
+      "hp": 2400,
+      "dps": 103,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/tree-of-life",
+      "abilityNames": [
+        "Devotion"
+      ]
+    },
+    "Fighter:tree of knowledge": {
+      "name": "Tree Of Knowledge",
+      "class": "Fighter",
+      "hp": 2330,
+      "dps": 91,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/tree-of-knowledge",
+      "abilityNames": [
+        "Forbidden Fruit"
+      ]
+    },
+    "Fighter:crab warlock": {
+      "name": "Crab Warlock",
+      "class": "Fighter",
+      "hp": 650,
+      "dps": 36,
+      "range": 450,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/crab-warlock",
+      "abilityNames": [
+        "Summon Crabling"
+      ]
+    },
+    "Fighter:crabomancer": {
+      "name": "Crabomancer",
+      "class": "Fighter",
+      "hp": 1860,
+      "dps": 102,
+      "range": 450,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/crabomancer",
+      "abilityNames": [
+        "Summon Pincer"
+      ]
+    },
+    "Fighter:pulsebot": {
+      "name": "Pulsebot",
+      "class": "Fighter",
+      "hp": 1940,
+      "dps": 62,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/pulsebot",
+      "abilityNames": [
+        "EMP"
+      ]
+    },
+    "Fighter:skybot": {
+      "name": "Skybot",
+      "class": "Fighter",
+      "hp": 5600,
+      "dps": 174,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/skybot",
+      "abilityNames": [
+        "EMP"
+      ]
+    },
+    "Fighter:crawling catapult": {
+      "name": "Crawling Catapult",
+      "class": "Fighter",
+      "hp": 1800,
+      "dps": 115,
+      "range": 700,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/crawling-catapult",
+      "abilityNames": [
+        "Stone Legs",
+        "Artillery"
+      ]
+    },
+    "Fighter:wandering trebuchet": {
+      "name": "Wandering Trebuchet",
+      "class": "Fighter",
+      "hp": 4630,
+      "dps": 295,
+      "range": 700,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/wandering-trebuchet",
+      "abilityNames": [
+        "Stone Legs",
+        "Artillery"
+      ]
+    },
+    "Fighter:rift baron": {
+      "name": "Rift Baron",
+      "class": "Fighter",
+      "hp": 1210,
+      "dps": 117,
+      "range": 450,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/rift-baron",
+      "abilityNames": [
+        "Portal of Trash"
+      ]
+    },
+    "Fighter:rift trader": {
+      "name": "Rift Trader",
+      "class": "Fighter",
+      "hp": 360,
+      "dps": 37,
+      "range": 450,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/rift-trader",
+      "abilityNames": [
+        "Portal of Trash"
+      ]
+    },
+    "Fighter:dwarf banker": {
+      "name": "Dwarf Banker",
+      "class": "Fighter",
+      "hp": 600,
+      "dps": 57,
+      "range": 500,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/dwarf-banker",
+      "abilityNames": [
+        "Compound Interest",
+        "Short Selling"
+      ]
+    },
+    "Fighter:big wig": {
+      "name": "Big Wig",
+      "class": "Fighter",
+      "hp": 1730,
+      "dps": 164,
+      "range": 500,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/big-wig",
+      "abilityNames": [
+        "Aggressive Portfolio",
+        "Short Selling"
+      ]
+    },
+    "Fighter:warp wing": {
+      "name": "Warp Wing",
+      "class": "Fighter",
+      "hp": 870,
+      "dps": 68,
+      "range": 550,
+      "atk": "Pure",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/warp-wing",
+      "abilityNames": [
+        "Plasma Decay"
+      ]
+    },
+    "Fighter:void manta": {
+      "name": "Void Manta",
+      "class": "Fighter",
+      "hp": 2480,
+      "dps": 190,
+      "range": 550,
+      "atk": "Pure",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/void-manta",
+      "abilityNames": [
+        "Plasma Decay",
+        "Plasma Overwhelming"
+      ]
+    },
+    "Fighter:mr brewpot": {
+      "name": "Mr Brewpot",
+      "class": "Fighter",
+      "hp": 2700,
+      "dps": 99,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/mr-brewpot",
+      "abilityNames": [
+        "Alchemy"
+      ]
+    },
+    "Fighter:dr brewpot": {
+      "name": "Dr Brewpot",
+      "class": "Fighter",
+      "hp": 6630,
+      "dps": 244,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/dr-brewpot",
+      "abilityNames": [
+        "Grand Alchemy"
+      ]
+    },
+    "Fighter:pirate skeleton": {
+      "name": "Pirate Skeleton",
+      "class": "Fighter",
+      "hp": 760,
+      "dps": 26,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/pirate-skeleton",
+      "abilityNames": [
+        "Secret Stash"
+      ]
+    },
+    "Fighter:spectral scallywag": {
+      "name": "Spectral Scallywag",
+      "class": "Fighter",
+      "hp": 2400,
+      "dps": 100,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/spectral-scallywag",
+      "abilityNames": [
+        "Unyielding Spirit"
+      ]
+    },
+    "Fighter:pipsqueak": {
+      "name": "Pipsqueak",
+      "class": "Fighter",
+      "hp": 1070,
+      "dps": 88,
+      "range": 550,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/pipsqueak",
+      "abilityNames": []
+    },
+    "Fighter:lumerian": {
+      "name": "Lumerian",
+      "class": "Fighter",
+      "hp": 2000,
+      "dps": 189,
+      "range": 550,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/lumerian",
+      "abilityNames": [
+        "Trium Of Power"
+      ]
+    },
+    "Fighter:scrappy": {
+      "name": "Scrappy",
+      "class": "Fighter",
+      "hp": 580,
+      "dps": 60,
+      "range": 650,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/scrappy",
+      "abilityNames": []
+    },
+    "Fighter:super scrappy": {
+      "name": "Super Scrappy",
+      "class": "Fighter",
+      "hp": 1800,
+      "dps": 181,
+      "range": 650,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/super-scrappy",
+      "abilityNames": [
+        "Wind Up"
+      ]
+    },
+    "Fighter:peewee": {
+      "name": "Peewee",
+      "class": "Fighter",
+      "hp": 260,
+      "dps": 8,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/peewee",
+      "abilityNames": [
+        "Booster"
+      ]
+    },
+    "Fighter:veteran": {
+      "name": "Veteran",
+      "class": "Fighter",
+      "hp": 1340,
+      "dps": 37,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/veteran",
+      "abilityNames": [
+        "Stimpack"
+      ]
+    },
+    "Fighter:bazooka": {
+      "name": "Bazooka",
+      "class": "Fighter",
+      "hp": 300,
+      "dps": 27,
+      "range": 600,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/bazooka",
+      "abilityNames": []
+    },
+    "Fighter:zeus": {
+      "name": "Zeus",
+      "class": "Fighter",
+      "hp": 940,
+      "dps": 53,
+      "range": 800,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/zeus",
+      "abilityNames": [
+        "Power Surge",
+        "Magnetic Accelerator"
+      ]
+    },
+    "Fighter:pyro": {
+      "name": "Pyro",
+      "class": "Fighter",
+      "hp": 1550,
+      "dps": 50,
+      "range": 300,
+      "atk": "Magic",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/pyro",
+      "abilityNames": [
+        "Pyromancy"
+      ]
+    },
+    "Fighter:tempest": {
+      "name": "Tempest",
+      "class": "Fighter",
+      "hp": 770,
+      "dps": 32,
+      "range": 300,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/tempest",
+      "abilityNames": [
+        "Machine Gunner"
+      ]
+    },
+    "Fighter:leviathan": {
+      "name": "Leviathan",
+      "class": "Fighter",
+      "hp": 1700,
+      "dps": 70,
+      "range": 300,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/leviathan",
+      "abilityNames": [
+        "Aerial Command",
+        "Bombardier"
+      ]
+    },
+    "Fighter:aps": {
+      "name": "APS",
+      "class": "Fighter",
+      "hp": 900,
+      "dps": 53,
+      "range": 400,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/aps",
+      "abilityNames": [
+        "Energize"
+      ]
+    },
+    "Fighter:mps": {
+      "name": "MPS",
+      "class": "Fighter",
+      "hp": 2400,
+      "dps": 141,
+      "range": 400,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/mps",
+      "abilityNames": [
+        "Mythium Core"
+      ]
+    },
+    "Fighter:berserker": {
+      "name": "Berserker",
+      "class": "Fighter",
+      "hp": 1870,
+      "dps": 53,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/berserker",
+      "abilityNames": [
+        "Brawler"
+      ]
+    },
+    "Fighter:fatalizer": {
+      "name": "Fatalizer",
+      "class": "Fighter",
+      "hp": 5260,
+      "dps": 151,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/fatalizer",
+      "abilityNames": [
+        "Duelist"
+      ]
+    },
+    "Fighter:millennium": {
+      "name": "Millennium",
+      "class": "Fighter",
+      "hp": 2010,
+      "dps": 168,
+      "range": 550,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/millennium",
+      "abilityNames": [
+        "Explosive Shells"
+      ]
+    },
+    "Fighter:doomsday machine": {
+      "name": "Doomsday Machine",
+      "class": "Fighter",
+      "hp": 4900,
+      "dps": 412,
+      "range": 550,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/doomsday-machine",
+      "abilityNames": [
+        "Detonation"
+      ]
+    },
+    "Fighter:looter": {
+      "name": "Looter",
+      "class": "Fighter",
+      "hp": 80,
+      "dps": 7,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/looter",
+      "abilityNames": []
+    },
+    "Fighter:pack rat": {
+      "name": "Pack Rat",
+      "class": "Fighter",
+      "hp": 660,
+      "dps": 46,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/pack-rat",
+      "abilityNames": [
+        "Treasure Hunt"
+      ]
+    },
+    "Fighter:harpy": {
+      "name": "Harpy",
+      "class": "Fighter",
+      "hp": 200,
+      "dps": 16,
+      "range": 450,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/harpy",
+      "abilityNames": [
+        "Acrobatics",
+        "Crimson Claws"
+      ]
+    },
+    "Fighter:sky queen": {
+      "name": "Sky Queen",
+      "class": "Fighter",
+      "hp": 1250,
+      "dps": 95,
+      "range": 450,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/sky-queen",
+      "abilityNames": [
+        "Acrobatics",
+        "Crimson Claws"
+      ]
+    },
+    "Fighter:warg": {
+      "name": "Warg",
+      "class": "Fighter",
+      "hp": 960,
+      "dps": 33,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/warg",
+      "abilityNames": []
+    },
+    "Fighter:lioness": {
+      "name": "Lioness",
+      "class": "Fighter",
+      "hp": 2250,
+      "dps": 103,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/lioness",
+      "abilityNames": [
+        "Entourage"
+      ]
+    },
+    "Fighter:alpha male": {
+      "name": "Alpha Male",
+      "class": "Fighter",
+      "hp": 2700,
+      "dps": 111,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/alpha-male",
+      "abilityNames": [
+        "Dominion"
+      ]
+    },
+    "Fighter:desert pilgrim": {
+      "name": "Desert Pilgrim",
+      "class": "Fighter",
+      "hp": 870,
+      "dps": 51,
+      "range": 350,
+      "atk": "Magic",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/desert-pilgrim",
+      "abilityNames": [
+        "Chain Heal"
+      ]
+    },
+    "Fighter:lost chieftain": {
+      "name": "Lost Chieftain",
+      "class": "Fighter",
+      "hp": 2350,
+      "dps": 175,
+      "range": 350,
+      "atk": "Magic",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/lost-chieftain",
+      "abilityNames": [
+        "Gaia Shield"
+      ]
+    },
+    "Fighter:sand badger": {
+      "name": "Sand Badger",
+      "class": "Fighter",
+      "hp": 2460,
+      "dps": 58,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/sand-badger",
+      "abilityNames": []
+    },
+    "Fighter:iron scales": {
+      "name": "Iron Scales",
+      "class": "Fighter",
+      "hp": 6620,
+      "dps": 157,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/iron-scales",
+      "abilityNames": []
+    },
+    "Fighter:great boar": {
+      "name": "Great Boar",
+      "class": "Fighter",
+      "hp": 3190,
+      "dps": 64,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/great-boar",
+      "abilityNames": [
+        "Stampede"
+      ]
+    },
+    "Fighter:red eyes": {
+      "name": "Red Eyes",
+      "class": "Fighter",
+      "hp": 8070,
+      "dps": 162,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/red-eyes",
+      "abilityNames": [
+        "Thunderous Charge"
+      ]
+    },
+    "Fighter:masked spirit": {
+      "name": "Masked Spirit",
+      "class": "Fighter",
+      "hp": 130,
+      "dps": 8,
+      "range": 600,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/masked-spirit",
+      "abilityNames": [
+        "Spectral Scream"
+      ]
+    },
+    "Fighter:false maiden": {
+      "name": "False Maiden",
+      "class": "Fighter",
+      "hp": 670,
+      "dps": 29,
+      "range": 600,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/false-maiden",
+      "abilityNames": [
+        "Spectral Scream"
+      ]
+    },
+    "Fighter:hell raiser": {
+      "name": "Hell Raiser",
+      "class": "Fighter",
+      "hp": 1500,
+      "dps": 56,
+      "range": 600,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/hell-raiser",
+      "abilityNames": [
+        "Tantrum",
+        "Spectral Scream"
+      ]
+    },
+    "Fighter:nekomata": {
+      "name": "Nekomata",
+      "class": "Fighter",
+      "hp": 600,
+      "dps": 29,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/nekomata",
+      "abilityNames": [
+        "Spirit Offering"
+      ]
+    },
+    "Fighter:infiltrator": {
+      "name": "Infiltrator",
+      "class": "Fighter",
+      "hp": 710,
+      "dps": 42,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/infiltrator",
+      "abilityNames": [
+        "Arm With Shuriken"
+      ]
+    },
+    "Fighter:orchid": {
+      "name": "Orchid",
+      "class": "Fighter",
+      "hp": 2460,
+      "dps": 147,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/orchid",
+      "abilityNames": [
+        "Shuriken Cyclone"
+      ]
+    },
+    "Fighter:eternal wanderer": {
+      "name": "Eternal Wanderer",
+      "class": "Fighter",
+      "hp": 750,
+      "dps": 32,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/eternal-wanderer",
+      "abilityNames": [
+        "Shallow Grave"
+      ]
+    },
+    "Fighter:samurai soul": {
+      "name": "Samurai Soul",
+      "class": "Fighter",
+      "hp": 2500,
+      "dps": 107,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/samurai-soul",
+      "abilityNames": [
+        "Shallow Grave"
+      ]
+    },
+    "Fighter:yozora": {
+      "name": "Yozora",
+      "class": "Fighter",
+      "hp": 1530,
+      "dps": 55,
+      "range": 100,
+      "atk": "Pure",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/yozora",
+      "abilityNames": [
+        "Wintry Touch"
+      ]
+    },
+    "Fighter:arctaire": {
+      "name": "Arctaire",
+      "class": "Fighter",
+      "hp": 4380,
+      "dps": 159,
+      "range": 100,
+      "atk": "Pure",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/arctaire",
+      "abilityNames": [
+        "Frozen Veil"
+      ]
+    },
+    "Fighter:soul gate": {
+      "name": "Soul Gate",
+      "class": "Fighter",
+      "hp": 2000,
+      "dps": 0,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/soul-gate",
+      "abilityNames": [
+        "Dimensional Rift",
+        "Blood Price"
+      ]
+    },
+    "Fighter:hell gate": {
+      "name": "Hell Gate",
+      "class": "Fighter",
+      "hp": 5200,
+      "dps": 0,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/hell-gate",
+      "abilityNames": [
+        "Dimensional Chasm",
+        "Blood Price"
+      ]
+    },
+    "Creature:crab": {
+      "name": "Crab",
+      "class": "Creature",
+      "hp": 120,
+      "dps": 5,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/crab",
+      "abilityNames": []
+    },
+    "Creature:wale": {
+      "name": "Wale",
+      "class": "Creature",
+      "hp": 140,
+      "dps": 7,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/wale",
+      "abilityNames": []
+    },
+    "Creature:hopper": {
+      "name": "Hopper",
+      "class": "Creature",
+      "hp": 120,
+      "dps": 7,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/hopper",
+      "abilityNames": []
+    },
+    "Creature:flying chicken": {
+      "name": "Flying Chicken",
+      "class": "Creature",
+      "hp": 230,
+      "dps": 13,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/flying-chicken",
+      "abilityNames": []
+    },
+    "Creature:scorpion": {
+      "name": "Scorpion",
+      "class": "Creature",
+      "hp": 340,
+      "dps": 15,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/scorpion",
+      "abilityNames": []
+    },
+    "Creature:rocko": {
+      "name": "Rocko",
+      "class": "Creature",
+      "hp": 820,
+      "dps": 31,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/rocko",
+      "abilityNames": [
+        "Impale"
+      ]
+    },
+    "Creature:sludge": {
+      "name": "Sludge",
+      "class": "Creature",
+      "hp": 560,
+      "dps": 28,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/sludge",
+      "abilityNames": [
+        "Blobs"
+      ]
+    },
+    "Creature:kobra": {
+      "name": "Kobra",
+      "class": "Creature",
+      "hp": 600,
+      "dps": 31,
+      "range": 400,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/kobra",
+      "abilityNames": []
+    },
+    "Creature:carapace": {
+      "name": "Carapace",
+      "class": "Creature",
+      "hp": 740,
+      "dps": 34,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/carapace",
+      "abilityNames": [
+        "Deflection"
+      ]
+    },
+    "Creature:granddaddy": {
+      "name": "Granddaddy",
+      "class": "Creature",
+      "hp": 10000,
+      "dps": 434,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/granddaddy",
+      "abilityNames": [
+        "Boss Unit"
+      ]
+    },
+    "Creature:quill shooter": {
+      "name": "Quill Shooter",
+      "class": "Creature",
+      "hp": 1100,
+      "dps": 60,
+      "range": 400,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/quill-shooter",
+      "abilityNames": []
+    },
+    "Creature:mantis": {
+      "name": "Mantis",
+      "class": "Creature",
+      "hp": 1340,
+      "dps": 79,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/mantis",
+      "abilityNames": []
+    },
+    "Creature:drill golem": {
+      "name": "Drill Golem",
+      "class": "Creature",
+      "hp": 3500,
+      "dps": 162,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/drill-golem",
+      "abilityNames": []
+    },
+    "Creature:killer slug": {
+      "name": "Killer Slug",
+      "class": "Creature",
+      "hp": 2110,
+      "dps": 97,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/killer-slug",
+      "abilityNames": []
+    },
+    "Creature:quadrapus": {
+      "name": "Quadrapus",
+      "class": "Creature",
+      "hp": 2110,
+      "dps": 116,
+      "range": 400,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/quadrapus",
+      "abilityNames": [
+        "Feast"
+      ]
+    },
+    "Creature:cardinal": {
+      "name": "Cardinal",
+      "class": "Creature",
+      "hp": 1990,
+      "dps": 96,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/cardinal",
+      "abilityNames": [
+        "Feast"
+      ]
+    },
+    "Creature:metal dragon": {
+      "name": "Metal Dragon",
+      "class": "Creature",
+      "hp": 3640,
+      "dps": 179,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/metal-dragon",
+      "abilityNames": [
+        "Feast"
+      ]
+    },
+    "Creature:wale chief": {
+      "name": "Wale Chief",
+      "class": "Creature",
+      "hp": 8100,
+      "dps": 273,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/wale-chief",
+      "abilityNames": [
+        "Poison-Tipped Pole"
+      ]
+    },
+    "Creature:dire toad": {
+      "name": "Dire Toad",
+      "class": "Creature",
+      "hp": 4100,
+      "dps": 247,
+      "range": 400,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/dire-toad",
+      "abilityNames": [
+        "Feast"
+      ]
+    },
+    "Creature:maccabeus": {
+      "name": "Maccabeus",
+      "class": "Creature",
+      "hp": 53550,
+      "dps": 2222,
+      "range": 250,
+      "atk": "Magic",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/maccabeus",
+      "abilityNames": [
+        "Boss Unit",
+        "Feast"
+      ]
+    },
+    "Creature:legion lord": {
+      "name": "Legion Lord",
+      "class": "Creature",
+      "hp": 7500,
+      "dps": 365,
+      "range": 100,
+      "atk": "Pure",
+      "def": "Immaterial",
+      "url": "https://beta.legiontd2.com/units/legion-lord",
+      "abilityNames": [
+        "Feast"
+      ]
+    },
+    "Mercenary:giant snail": {
+      "name": "Giant Snail",
+      "class": "Mercenary",
+      "hp": 600,
+      "dps": 18,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/giant-snail",
+      "abilityNames": []
+    },
+    "Mercenary:snail": {
+      "name": "Snail",
+      "class": "Mercenary",
+      "hp": 240,
+      "dps": 7,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/snail",
+      "abilityNames": []
+    },
+    "Mercenary:robo": {
+      "name": "Robo",
+      "class": "Mercenary",
+      "hp": 440,
+      "dps": 34,
+      "range": 550,
+      "atk": "Magic",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/robo",
+      "abilityNames": []
+    },
+    "Mercenary:lizard": {
+      "name": "Lizard",
+      "class": "Mercenary",
+      "hp": 280,
+      "dps": 21,
+      "range": 550,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/lizard",
+      "abilityNames": []
+    },
+    "Mercenary:dragon turtle": {
+      "name": "Dragon Turtle",
+      "class": "Mercenary",
+      "hp": 500,
+      "dps": 15,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/dragon-turtle",
+      "abilityNames": []
+    },
+    "Mercenary:brute": {
+      "name": "Brute",
+      "class": "Mercenary",
+      "hp": 860,
+      "dps": 47,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/brute",
+      "abilityNames": [
+        "Maul"
+      ]
+    },
+    "Mercenary:fiend": {
+      "name": "Fiend",
+      "class": "Mercenary",
+      "hp": 770,
+      "dps": 22,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/fiend",
+      "abilityNames": []
+    },
+    "Mercenary:dino": {
+      "name": "Dino",
+      "class": "Mercenary",
+      "hp": 1040,
+      "dps": 30,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/dino",
+      "abilityNames": []
+    },
+    "Mercenary:hermit": {
+      "name": "Hermit",
+      "class": "Mercenary",
+      "hp": 800,
+      "dps": 35,
+      "range": 550,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/hermit",
+      "abilityNames": [
+        "Healing Aura"
+      ]
+    },
+    "Mercenary:cannoneer": {
+      "name": "Cannoneer",
+      "class": "Mercenary",
+      "hp": 770,
+      "dps": 60,
+      "range": 550,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/cannoneer",
+      "abilityNames": []
+    },
+    "Mercenary:imp": {
+      "name": "Imp",
+      "class": "Mercenary",
+      "hp": 730,
+      "dps": 43,
+      "range": 100,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/imp",
+      "abilityNames": [
+        "Diabolic Duo"
+      ]
+    },
+    "Mercenary:safety mole": {
+      "name": "Safety Mole",
+      "class": "Mercenary",
+      "hp": 1750,
+      "dps": 110,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/safety-mole",
+      "abilityNames": [
+        "Safety Aura"
+      ]
+    },
+    "Mercenary:drake": {
+      "name": "Drake",
+      "class": "Mercenary",
+      "hp": 960,
+      "dps": 73,
+      "range": 550,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/drake",
+      "abilityNames": []
+    },
+    "Mercenary:pack leader": {
+      "name": "Pack Leader",
+      "class": "Mercenary",
+      "hp": 2350,
+      "dps": 148,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/pack-leader",
+      "abilityNames": [
+        "Leadership Aura"
+      ]
+    },
+    "Mercenary:mimic": {
+      "name": "Mimic",
+      "class": "Mercenary",
+      "hp": 2300,
+      "dps": 137,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/mimic",
+      "abilityNames": [
+        "Plunder",
+        "Giga Mimic"
+      ]
+    },
+    "Mercenary:honey bear": {
+      "name": "Honey Bear",
+      "class": "Mercenary",
+      "hp": 2550,
+      "dps": 136,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/honey-bear",
+      "abilityNames": [
+        "Pot O Honey"
+      ]
+    },
+    "Mercenary:witch": {
+      "name": "Witch",
+      "class": "Mercenary",
+      "hp": 1550,
+      "dps": 111,
+      "range": 550,
+      "atk": "Magic",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/witch",
+      "abilityNames": [
+        "Summon Froggo",
+        "Witchcraft"
+      ]
+    },
+    "Mercenary:ogre": {
+      "name": "Ogre",
+      "class": "Mercenary",
+      "hp": 2960,
+      "dps": 127,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/ogre",
+      "abilityNames": [
+        "Rage"
+      ]
+    },
+    "Mercenary:ghost knight": {
+      "name": "Ghost Knight",
+      "class": "Mercenary",
+      "hp": 2370,
+      "dps": 156,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/ghost-knight",
+      "abilityNames": [
+        "Ghost Walker"
+      ]
+    },
+    "Mercenary:four eyes": {
+      "name": "Four Eyes",
+      "class": "Mercenary",
+      "hp": 2550,
+      "dps": 99,
+      "range": 550,
+      "atk": "Magic",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/four-eyes",
+      "abilityNames": [
+        "Death Stare"
+      ]
+    },
+    "Mercenary:centaur": {
+      "name": "Centaur",
+      "class": "Mercenary",
+      "hp": 4200,
+      "dps": 153,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Natural",
+      "url": "https://beta.legiontd2.com/units/centaur",
+      "abilityNames": [
+        "Cleave"
+      ]
+    },
+    "Mercenary:shaman": {
+      "name": "Shaman",
+      "class": "Mercenary",
+      "hp": 3300,
+      "dps": 156,
+      "range": 550,
+      "atk": "Magic",
+      "def": "Swift",
+      "url": "https://beta.legiontd2.com/units/shaman",
+      "abilityNames": [
+        "Blood Rush"
+      ]
+    },
+    "Mercenary:siege ram": {
+      "name": "Siege Ram",
+      "class": "Mercenary",
+      "hp": 5950,
+      "dps": 209,
+      "range": 100,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/siege-ram",
+      "abilityNames": [
+        "Deflection"
+      ]
+    },
+    "Mercenary:needler": {
+      "name": "Needler",
+      "class": "Mercenary",
+      "hp": 3840,
+      "dps": 160,
+      "range": 550,
+      "atk": "Pierce",
+      "def": "Fortified",
+      "url": "https://beta.legiontd2.com/units/needler",
+      "abilityNames": [
+        "Rapid Fire"
+      ]
+    },
+    "Mercenary:kraken": {
+      "name": "Kraken",
+      "class": "Mercenary",
+      "hp": 7450,
+      "dps": 257,
+      "range": 100,
+      "atk": "Impact",
+      "def": "Arcane",
+      "url": "https://beta.legiontd2.com/units/kraken",
+      "abilityNames": [
+        "World Ender"
+      ]
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "unitKey": "Creature:crab",
+      "count": 12,
+      "countText": "12x"
+    },
+    {
+      "wave": 2,
+      "unitKey": "Creature:wale",
+      "count": 12,
+      "countText": "12x"
+    },
+    {
+      "wave": 3,
+      "unitKey": "Creature:hopper",
+      "count": 18,
+      "countText": "18x"
+    },
+    {
+      "wave": 4,
+      "unitKey": "Creature:flying chicken",
+      "count": 12,
+      "countText": "12x"
+    },
+    {
+      "wave": 5,
+      "unitKey": "Creature:scorpion",
+      "count": null,
+      "countText": "8x + Miniboss"
+    },
+    {
+      "wave": 6,
+      "unitKey": "Creature:rocko",
+      "count": 6,
+      "countText": "6x"
+    },
+    {
+      "wave": 7,
+      "unitKey": "Creature:sludge",
+      "count": 10,
+      "countText": "10x"
+    },
+    {
+      "wave": 8,
+      "unitKey": "Creature:kobra",
+      "count": 12,
+      "countText": "12x"
+    },
+    {
+      "wave": 9,
+      "unitKey": "Creature:carapace",
+      "count": 12,
+      "countText": "12x"
+    },
+    {
+      "wave": 10,
+      "unitKey": "Creature:granddaddy",
+      "count": 1,
+      "countText": "1x"
+    },
+    {
+      "wave": 11,
+      "unitKey": "Creature:quill shooter",
+      "count": 12,
+      "countText": "12x"
+    },
+    {
+      "wave": 12,
+      "unitKey": "Creature:mantis",
+      "count": 12,
+      "countText": "12x"
+    },
+    {
+      "wave": 13,
+      "unitKey": "Creature:drill golem",
+      "count": 6,
+      "countText": "6x"
+    },
+    {
+      "wave": 14,
+      "unitKey": "Creature:killer slug",
+      "count": 12,
+      "countText": "12x"
+    },
+    {
+      "wave": 15,
+      "unitKey": "Creature:quadrapus",
+      "count": null,
+      "countText": "8x + Miniboss"
+    },
+    {
+      "wave": 16,
+      "unitKey": "Creature:cardinal",
+      "count": 18,
+      "countText": "18x"
+    },
+    {
+      "wave": 17,
+      "unitKey": "Creature:metal dragon",
+      "count": 12,
+      "countText": "12x"
+    },
+    {
+      "wave": 18,
+      "unitKey": "Creature:wale chief",
+      "count": 6,
+      "countText": "6x"
+    },
+    {
+      "wave": 19,
+      "unitKey": "Creature:dire toad",
+      "count": 12,
+      "countText": "12x"
+    },
+    {
+      "wave": 20,
+      "unitKey": "Creature:maccabeus",
+      "count": 1,
+      "countText": "1x"
+    },
+    {
+      "wave": 21,
+      "unitKey": "Creature:legion lord",
+      "count": null,
+      "countText": "8x + Miniboss"
+    }
+  ],
+  "counts": {
+    "Fighter": 147,
+    "Creature": 21,
+    "Mercenary": 25
+  }
+}
